@@ -88,7 +88,7 @@ public class TranslationService {
 	}
 
 	@Cacheable(value = "translation", key = "#key")
-	public Translation findByKey(String key) throws JsonProcessingException {
+	public Translation findByKey(String key) {
 		return repository.findByKey(key);
 	}
 }

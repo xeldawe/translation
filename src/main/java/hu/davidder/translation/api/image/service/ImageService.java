@@ -29,7 +29,7 @@ public class ImageService {
 	private ImageRepository imageRepository;
 	
 	@Cacheable(value = "image", key = "{#name, #targetSize}")
-	public Image getCdnImage(String name, Integer targetSize) throws JsonProcessingException {
+	public Image getCdnImage(String name, Integer targetSize) {
 		return imageRepository.getUrl(name, targetSize);
 	}
 	

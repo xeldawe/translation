@@ -19,7 +19,6 @@ import hu.davidder.translation.api.image.service.ImageService;
 import hu.davidder.translation.api.translation.entity.Translation;
 import hu.davidder.translation.api.translation.service.TranslationService;
 
-//ObjectMapper bypass redis cache incorrect serialization (example: ignoring @JsonIgnore and others - causing infinite loop with @OneToMany)
 @RestController
 @RequestMapping("api/v1")
 public class TranslationController {

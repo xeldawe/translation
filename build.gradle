@@ -40,8 +40,13 @@ implementation 'org.imgscalr:imgscalr-lib:4.2'
 // https://mvnrepository.com/artifact/commons-io/commons-io
 implementation 'commons-io:commons-io:2.16.1'
 // https://mvnrepository.com/artifact/com.bucket4j/bucket4j-core
-implementation 'com.bucket4j:bucket4j-core:8.10.1'
-// https://mvnrepository.com/artifact/javax.cache/cache-api
+//implementation 'com.bucket4j:bucket4j-core:8.10.1'
+// https://mvnrepository.com/artifact/com.bucket4j/bucket4j_jdk17-redis-common
+implementation 'com.bucket4j:bucket4j_jdk17-redis-common:8.13.1'
+// https://mvnrepository.com/artifact/com.bucket4j/bucket4j_jdk17-redisson
+implementation 'com.bucket4j:bucket4j_jdk17-redisson:8.13.1'
+// https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter
+implementation 'org.redisson:redisson-spring-boot-starter:3.32.0'
 
 
 	implementation 'org.springframework.boot:spring-boot-starter-cache'

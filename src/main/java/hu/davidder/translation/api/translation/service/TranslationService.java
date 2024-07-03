@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import hu.davidder.translation.api.image.entity.Image;
+import hu.davidder.translation.api.image.entity.ImageType;
 import hu.davidder.translation.api.image.service.ImageService;
 import hu.davidder.translation.api.translation.entity.Translation;
 import hu.davidder.translation.api.translation.entity.Type;
@@ -50,9 +51,9 @@ public class TranslationService {
 			t.setKey(k);
 			if (v.startsWith("http")) {
 				t.setType(Type.IMAGE);
-				String type = "PNG";
+				ImageType type = ImageType.PNG;
 				if (v.contains(".jpg")) {
-					type = "JPG";
+					type = ImageType.JPG;
 				}
 				String name = "" + UUID.randomUUID();
 				Image image2 = new Image();
@@ -60,18 +61,18 @@ public class TranslationService {
 				image2.setTranslation(t);
 				image2.setValue(imageService.getImage(v));
 				image2.setName(name);
-				image2.setType(type.equals("PNG") ? "PNG" : "JPEG");
+				image2.setType(type);
 				Image image = new Image();
 				image.setTargetSize(128);
 				image.setTranslation(t);
 				image.setValue(imageService.resizeImage(v, 128));
 				image.setName(name);
-				image.setType(type.equals("PNG") ? "PNG" : "JPEG");
+				image.setType(type);
 				List<Image> imgs = new ArrayList<>();
 				imgs.add(image2);
 				imgs.add(image);
 				t.setImages(imgs);
-				t.setValue("http://localhost:8080/images/" + name);
+				t.setValue("http://localhost:8080/api/v1/images/" + name);
 			} else {
 				t.setType(Type.TEXT);
 				t.setValue(v);

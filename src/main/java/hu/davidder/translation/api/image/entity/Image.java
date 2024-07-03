@@ -35,7 +35,7 @@ public class Image implements Serializable{
 	private String name;
 	private byte[] value;
 	private Integer targetSize;
-	private String type;
+	private ImageType type;
 
 	public Image() {
 		super();
@@ -44,7 +44,7 @@ public class Image implements Serializable{
 
 
 
-	public Image(Translation translation, String name, byte[] value, Integer targetSize, String type) {
+	public Image(Translation translation, String name, byte[] value, Integer targetSize, ImageType type) {
 		super();
 		this.translation = translation;
 		this.name = name;
@@ -55,13 +55,13 @@ public class Image implements Serializable{
 
 
 
-	public String getType() {
+	public ImageType getType() {
 		return type;
 	}
 
 
 
-	public void setType(String type) {
+	public void setType(ImageType type) {
 		this.type = type;
 	}
 

@@ -6,11 +6,11 @@ import io.github.bucket4j.Bandwidth;
 
 public enum PricingPlan {
 
-	FREE(1250), //1250/h
+	TRIAL(1250), //1250/h
 
-	BASIC(250000), //250k/h
+	TIER1(250000), //250k/h
 
-	PROFESSIONAL(1000000); //1m/h
+	TIER2(1000000); //1m/h
 
 	private int bucketCapacity;
 

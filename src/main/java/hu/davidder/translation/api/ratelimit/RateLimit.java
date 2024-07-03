@@ -2,7 +2,9 @@ package hu.davidder.translation.api.ratelimit;
 
 import java.io.Serializable;
 
-public class ApiKey implements Serializable{
+import io.github.bucket4j.Bucket;
+
+public class RateLimit implements Serializable{
 
 	/**
 	 * 
@@ -11,16 +13,19 @@ public class ApiKey implements Serializable{
 	private String key;
 	private String ipAddress;
 	private PricingPlan plan;
+	private Bucket bucket;
+	private RateLimitType type;
 	
-	public ApiKey() {
+	public RateLimit() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public ApiKey(String key, PricingPlan plan, String ipAddress) {
+	public RateLimit(String key, PricingPlan plan, String ipAddress, RateLimitType type) {
 		super();
 		this.key = key;
 		this.plan = plan;
 		this.ipAddress = ipAddress;
+		this.type = type;
 	}
 	public String getKey() {
 		return key;
@@ -42,8 +47,21 @@ public class ApiKey implements Serializable{
 	}
 	
 	public String getCacheKey() {
-		return this.key+"-"+this.ipAddress;
+		return this.key+"-"+this.ipAddress+"-"+this.type;
 	}
+	public Bucket getBucket() {
+		return bucket;
+	}
+	public void setBucket(Bucket bucket) {
+		this.bucket = bucket;
+	}
+	public RateLimitType getRateLimitType() {
+		return type;
+	}
+	public void setRateLimitType(RateLimitType type) {
+		this.type = type;
+	}
+	
 	
 	
 }

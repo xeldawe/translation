@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager.RedisCacheManagerBuilder;
@@ -52,33 +51,31 @@ public class CacheConfig {
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	@Qualifier("redisTemplate")
-	@Lazy
 	private RedisTemplate redistTemplate;
 
+	@SuppressWarnings({ "unchecked", "rawtypes"})
 	@Bean
-	@Lazy
 	public RedisCacheManagerBuilderCustomizer customizer() {
 		redistTemplate.getRequiredConnectionFactory().getConnection().commands().flushDb(); // Purge cache on startup
 		ObjectMapper mapper = new ObjectMapper();
 		JavaType transactionsType = mapper.getTypeFactory().constructType(new TypeReference<Iterable<Translation>>(){});
 		return builder -> builder
-				.withCacheConfiguration("translations", getConfiguration(translationsCacheDuration, transactionsType))
-				.withCacheConfiguration("translations", getConfiguration(translationsCacheDuration, Translation.class))
-				.withCacheConfiguration("image", getConfiguration(translationsCacheDuration, Image.class))
-				.withCacheConfiguration("buckets", getConfiguration(translationsCacheDuration, Bucket.class))
-		;
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private RedisCacheConfiguration getConfiguration(final long duration, final Object type) {
-		RedisCacheConfiguration config =  RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMillis(duration));
-		Jackson2JsonRedisSerializer serializer = null;
-		if(type instanceof JavaType) {
-			serializer = new Jackson2JsonRedisSerializer((JavaType) type);
-		}else {
-			serializer = new Jackson2JsonRedisSerializer((Class<?>) type);
-		}
-		return config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer));
+				.withCacheConfiguration("translations",
+						RedisCacheConfiguration.defaultCacheConfig()
+								.entryTtl(Duration.ofMillis(translationsCacheDuration))
+								.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(transactionsType))))
+				.withCacheConfiguration("translation",
+						RedisCacheConfiguration.defaultCacheConfig()
+								.entryTtl(Duration.ofMillis(translationCacheDuration))
+								.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(Translation.class))))
+				.withCacheConfiguration("image",
+						RedisCacheConfiguration.defaultCacheConfig()
+								.entryTtl(Duration.ofMillis(imageCacheDuration))
+								.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(Image.class))))
+				.withCacheConfiguration("buckets",
+						RedisCacheConfiguration.defaultCacheConfig()
+								.entryTtl(Duration.ofSeconds(bucketCacheDuration))
+								.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(Bucket.class))));
 	}
 	
 	/**
@@ -87,7 +84,6 @@ public class CacheConfig {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Bean
-	@Lazy
 	public RedissonBasedProxyManager proxyManager() {
 		Config config = new Config();
 		config.useSingleServer().setAddress("redis://localhost:6379");

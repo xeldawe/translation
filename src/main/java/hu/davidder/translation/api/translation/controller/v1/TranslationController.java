@@ -86,7 +86,7 @@ public class TranslationController {
     }
 	 
 	@GetMapping("images/{name}")
-	@Operation(summary = "Return image from databse", description = "TBC")
+	@Operation(summary = "Return image from database", description = "TBC")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Everything is fine",
 					content = @Content(schema = @Schema(implementation = Byte[].class))),
@@ -103,18 +103,25 @@ public class TranslationController {
     }
 	
 	//TODO
-	@GetMapping("/change")
+	@GetMapping(value = "/stream/change", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@Operation(summary = "Stream", description = "Transaction change stream")
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Stream finished",
+					content = @Content(schema = @Schema(implementation = SseEmitter.class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(",
+			content = @Content(schema = @Schema(implementation = Void.class))),
+	})
 	public SseEmitter change() {
-	    SseEmitter emitter = new SseEmitter();
+	    SseEmitter emitter = new SseEmitter(5000l);
 		executor.submit(() -> {
 			try {
 				int counter = 0;
-					while(counter < 100) {
+				while(counter < 100) {
 					emitter.send("Changed "+ System.currentTimeMillis());
 					TimeUnit.SECONDS.sleep(1);
 					counter++;
-					}
-					emitter.complete();
+				}
+				emitter.complete();
 			} catch (IOException | InterruptedException e) {
 			  emitter.completeWithError(e);
 			}

@@ -1,6 +1,5 @@
 package hu.davidder.translation.api.core.config;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;

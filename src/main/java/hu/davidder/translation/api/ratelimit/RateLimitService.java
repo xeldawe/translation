@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import io.github.bucket4j.Bandwidth;
@@ -25,6 +26,7 @@ public class RateLimitService {
 	@Autowired
 	private ProxyManager proxyManager;
 	
+	@Async
     public Bandwidth globalRateLimit() {
     	return Bandwidth
 				.builder()
@@ -41,10 +43,12 @@ public class RateLimitService {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Async
 	public void reset(final RateLimit rateLimit) {
 		proxyManager.removeProxy(rateLimit.getCacheKey());
 	}
 
+	@Async
 	private BucketConfiguration createBucketConfiguration(final RateLimit rateLimit) {
 		return BucketConfiguration.builder()
 				.addLimit(rateLimit.getRateLimitType().equals(RateLimitType.GLOBAL)?globalRateLimit():rateLimit.getPlan().getLimit())

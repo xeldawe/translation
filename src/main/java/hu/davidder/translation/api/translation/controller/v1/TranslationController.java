@@ -1,6 +1,9 @@
 package hu.davidder.translation.api.translation.controller.v1;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import hu.davidder.translation.api.image.entity.Image;
 import hu.davidder.translation.api.image.entity.ImageType;
@@ -38,6 +42,8 @@ public class TranslationController {
 	@Lazy
 	@Autowired
 	private ImageService imageService;
+	
+	private final ExecutorService executor = Executors.newFixedThreadPool(20);
     
 	@GetMapping("/translations")
 	@Operation(summary = "Get all translations", description = "This will query every translations")
@@ -96,6 +102,27 @@ public class TranslationController {
         		.body(response);
     }
 	
-	
+	//TODO
+	@GetMapping("/change")
+	public SseEmitter change() {
+	    SseEmitter emitter = new SseEmitter();
+		executor.submit(() -> {
+			try {
+				int counter = 0;
+					while(counter < 100) {
+					emitter.send("Changed "+ System.currentTimeMillis());
+					TimeUnit.SECONDS.sleep(1);
+					counter++;
+					}
+					emitter.complete();
+			} catch (IOException | InterruptedException e) {
+			  emitter.completeWithError(e);
+			}
+
+		});
+		return emitter;
+	}
+	 
+
 }
 

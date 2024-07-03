@@ -22,11 +22,11 @@ public class MvcConfig implements WebMvcConfigurer {
 	
 	@Autowired
 	@Lazy
-	private RateLimitInterceptor pricingPlanRateLimitInterceptor;
+	private RateLimitInterceptor rateLimitInterceptor;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		InterceptorRegistration interceptor = registry.addInterceptor(pricingPlanRateLimitInterceptor);
+		InterceptorRegistration interceptor = registry.addInterceptor(rateLimitInterceptor);
 		interceptor.addPathPatterns(Arrays.asList(pathPatterns));
 	}
 

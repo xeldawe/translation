@@ -11,9 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import hu.davidder.translation.api.ratelimit.RateLimit;
 import hu.davidder.translation.api.core.enums.Headers;
 import hu.davidder.translation.api.ratelimit.PricingPlan;
+import hu.davidder.translation.api.ratelimit.RateLimit;
 import hu.davidder.translation.api.ratelimit.RateLimitService;
 import hu.davidder.translation.api.ratelimit.RateLimitType;
 import io.github.bucket4j.Bucket;

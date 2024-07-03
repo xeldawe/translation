@@ -3,6 +3,7 @@ package hu.davidder.translation.api.translation.controller.v1;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,9 +31,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Translation", description = "Endpoints for querying translations")
 public class TranslationController {
 
+	@Lazy
 	@Autowired
     private TranslationService translationService;
 	
+	@Lazy
 	@Autowired
 	private ImageService imageService;
     

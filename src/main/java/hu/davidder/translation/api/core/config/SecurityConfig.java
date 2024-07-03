@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +28,7 @@ public class SecurityConfig {
 	private String[] publicEndpoints;
 	
 	@Bean
+	@Lazy
 	public SecurityFilterChain configure(final HttpSecurity http) throws Exception  {
 		http
 			.cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
@@ -44,6 +46,7 @@ public class SecurityConfig {
 	}
 	
 	@Bean
+	@Lazy
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}

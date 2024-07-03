@@ -1,6 +1,7 @@
 package hu.davidder.translation.api.translation.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import jakarta.persistence.criteria.Root;
 @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
 public class CustomTranslationRepositoryImpl implements CustomTranslationRepository {
 
+	@Lazy
     @Autowired
     private EntityManager entityManager;
 	

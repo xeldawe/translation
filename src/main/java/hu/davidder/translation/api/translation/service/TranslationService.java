@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,9 +32,11 @@ import hu.davidder.translation.api.translation.repository.TranslationRepository;
 @CacheConfig
 public class TranslationService {
 
+	@Lazy
 	@Autowired
 	private TranslationRepository repository;
 
+	@Lazy
 	@Autowired
 	private ImageService imageService;
 

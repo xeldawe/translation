@@ -13,6 +13,7 @@ import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,6 +26,7 @@ import hu.davidder.translation.api.image.repository.ImageRepository;
 @CacheConfig
 public class ImageService {
 	
+	@Lazy
 	@Autowired
 	private ImageRepository imageRepository;
 	

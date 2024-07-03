@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager.RedisCacheManagerBuilder;
@@ -51,9 +52,11 @@ public class CacheConfig {
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	@Qualifier("redisTemplate")
+	@Lazy
 	private RedisTemplate redistTemplate;
 
 	@Bean
+	@Lazy
 	public RedisCacheManagerBuilderCustomizer customizer() {
 		redistTemplate.getRequiredConnectionFactory().getConnection().commands().flushDb(); // Purge cache on startup
 		ObjectMapper mapper = new ObjectMapper();
@@ -84,6 +87,7 @@ public class CacheConfig {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Bean
+	@Lazy
 	public RedissonBasedProxyManager proxyManager() {
 		Config config = new Config();
 		config.useSingleServer().setAddress("redis://localhost:6379");

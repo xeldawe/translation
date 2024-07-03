@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @PropertySource("classpath:ratelimit.properties")
 public class RateLimitInterceptor implements HandlerInterceptor {
 
+	@Lazy
 	@Autowired
 	private RateLimitService rateLimitService;
 

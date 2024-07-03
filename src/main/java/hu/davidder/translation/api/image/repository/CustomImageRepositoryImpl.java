@@ -2,7 +2,7 @@ package hu.davidder.translation.api.image.repository;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +16,10 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 
-@Repository
 @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
 public class CustomImageRepositoryImpl implements CustomImageRepository {
 
+	@Lazy
 	@Autowired
 	private EntityManager entityManager;
 

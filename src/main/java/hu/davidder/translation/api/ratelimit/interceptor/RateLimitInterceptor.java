@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import hu.davidder.translation.api.ratelimit.RateLimit;
+import hu.davidder.translation.api.core.enums.Headers;
 import hu.davidder.translation.api.ratelimit.PricingPlan;
 import hu.davidder.translation.api.ratelimit.RateLimitService;
 import hu.davidder.translation.api.ratelimit.RateLimitType;
@@ -23,20 +24,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @PropertySource("classpath:ratelimit.properties")
 public class RateLimitInterceptor implements HandlerInterceptor {
 
-	private static final String HEADER_API_KEY = "X-Api-Key";
-	private static final String HEADER_LIMIT_REMAINING = "X-Rate-Limit-Remaining";
-	private static final String HEADER_RETRY_AFTER = "X-Rate-Limit-Retry-After-Seconds";
-	private static final String HEADER_GLOBAL_LIMIT_REMAINING = "X-Rate-Global-Limit-Remaining";
-	private static final String HEADER_GLOBAL_RETRY_AFTER = "X-Rate-Global-Limit-Retry-After-Seconds";
-	private static final String TIER = "X-Tier";
-
 	@Autowired
 	private RateLimitService rateLimitService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String RateLimit = request.getHeader(HEADER_API_KEY);
+		String RateLimit = request.getHeader(Headers.X_API_KEY.name());
 		if (RateLimit == null || RateLimit.isEmpty()) {
 			String urlRateLimit = null;
 			try { // Try to get api key (URL)
@@ -66,19 +60,17 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 		Bucket tokenBucket = rateLimitService.getBucket(rateLimit);
 		ConsumptionProbe probe = tokenBucket.tryConsumeAndReturnRemaining(1);
 		if (!isGlobal) {
-			response.addHeader(TIER, rateLimit.getPlan().toString());
+			response.addHeader(Headers.X_TIER.name(), rateLimit.getPlan().toString());
 		}
 		if (probe.isConsumed()) {
-			response.addHeader(isGlobal ? HEADER_GLOBAL_LIMIT_REMAINING : HEADER_LIMIT_REMAINING,
+			response.addHeader(isGlobal ? Headers.X_RATE_GLOBAL_LIMIT_REMAINING.name() : Headers.X_RATE_LIMIT_REMAINING.name(),
 					String.valueOf(probe.getRemainingTokens()));
 			return true;
 		} else {
 			long waitForRefill = probe.getNanosToWaitForRefill() / 1_000_000_000;
 			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-			response.addHeader(isGlobal ? HEADER_GLOBAL_RETRY_AFTER : HEADER_RETRY_AFTER,
+			response.addHeader(isGlobal ? Headers.X_RATE_LIMIT_GLOBAL_RETRY_AFTER_SECONDS.name() : Headers.X_RATE_LIMIT_RETRY_AFTER_SECONDS.name(),
 					String.valueOf(waitForRefill));
-			response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(),
-					isGlobal ? "Stop spamming" : "You have exhausted your API Request Quota"); // 429
 			return false;
 		}
 	}

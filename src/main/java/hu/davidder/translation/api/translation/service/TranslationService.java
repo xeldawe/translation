@@ -37,6 +37,7 @@ public class TranslationService {
 	@Autowired
 	private ImageService imageService;
 
+	@Deprecated
 	public void initDummyData() throws JsonMappingException, JsonProcessingException, IOException {
 		Map<String, String> result = new ObjectMapper().readValue(
 				FileUtils.readFileToString(new File("C:\\Users\\Xel\\Desktop\\Project\\test\\translation.json"),

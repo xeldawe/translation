@@ -7,12 +7,11 @@ import io.github.bucket4j.Bandwidth;
 public enum PricingPlan {
 
 	TRIAL(1250), //1250/h
-
 	TIER1(250000), //250k/h
+	TIER2(1000000),//1m/h
+	;
 
-	TIER2(1000000); //1m/h
-
-	private int bucketCapacity;
+	private final int bucketCapacity;
 
 	private PricingPlan(int bucketCapacity) {
 		this.bucketCapacity = bucketCapacity;

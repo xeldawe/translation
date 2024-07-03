@@ -106,7 +106,7 @@ public class TranslationController {
 	@GetMapping(value = "/stream/change", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@Operation(summary = "Stream", description = "Transaction change stream")
 	@ApiResponses(value = { 
-			@ApiResponse(responseCode = "200", description = "Stream finished",
+			@ApiResponse(responseCode = "200", description = "Streaming",
 					content = @Content(schema = @Schema(implementation = SseEmitter.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(",
 			content = @Content(schema = @Schema(implementation = Void.class))),

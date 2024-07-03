@@ -96,6 +96,11 @@ public class Translation implements Serializable{
 	public void setImages(List<Image> images) {
 		this.images = images;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Translation [id=" + id + ", key=" + key + ", value=" + value + ", type=" + type + ", images=" + images
+				+ "]";
+	}
 	
 }

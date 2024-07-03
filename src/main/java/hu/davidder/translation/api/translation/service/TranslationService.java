@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -97,4 +100,19 @@ public class TranslationService {
 	public Translation findByKey(String key) {
 		return repository.findByKey(key);
 	}
+	
+	@Async("SSE")
+	public void sendKeyChangeEvents(SseEmitter emitter, String key) {
+		try {
+		   	for(int i = 0; i < 10; i++) {
+		   		emitter.send(repository.findByKey(key)); //TODO
+		   		emitter.send("Changed "+ System.currentTimeMillis());
+		   		TimeUnit.SECONDS.sleep(2);
+		   	}
+		   	emitter.complete();
+		} catch (IOException | InterruptedException e) {
+		   	emitter.completeWithError(e);
+		}
+	}
+	
 }

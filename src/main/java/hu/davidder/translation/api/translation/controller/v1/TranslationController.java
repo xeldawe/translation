@@ -42,8 +42,6 @@ public class TranslationController {
 	@Lazy
 	@Autowired
 	private ImageService imageService;
-	
-	private final ExecutorService executor = Executors.newFixedThreadPool(20);
     
 	@GetMapping("/translations")
 	@Operation(summary = "Get all translations", description = "This will query every translations")
@@ -112,21 +110,8 @@ public class TranslationController {
 			content = @Content(schema = @Schema(implementation = Void.class))),
 	})
 	public SseEmitter change() {
-	    SseEmitter emitter = new SseEmitter(5000l);
-		executor.submit(() -> {
-			try {
-				int counter = 0;
-				while(counter < 100) {
-					emitter.send("Changed "+ System.currentTimeMillis());
-					TimeUnit.SECONDS.sleep(1);
-					counter++;
-				}
-				emitter.complete();
-			} catch (IOException | InterruptedException e) {
-			  emitter.completeWithError(e);
-			}
-
-		});
+	    SseEmitter emitter = new SseEmitter(10000l);
+	    translationService.sendKeyChangeEvents(emitter, "translation-1-text");
 		return emitter;
 	}
 	 

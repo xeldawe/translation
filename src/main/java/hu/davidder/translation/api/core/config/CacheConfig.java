@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager.RedisCacheManagerBuilder;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -43,34 +44,38 @@ public class CacheConfig {
 	@Value("${image.cache.duration}")
 	private long imageCacheDuration;
 	
+	@Value("${bucket.cache.duration}")
+	private long bucketCacheDuration;
+	
+	
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	@Qualifier("redisTemplate")
 	private RedisTemplate redistTemplate;
 
-	@SuppressWarnings({ "unchecked", "rawtypes"})
 	@Bean
 	public RedisCacheManagerBuilderCustomizer customizer() {
 		redistTemplate.getRequiredConnectionFactory().getConnection().commands().flushDb(); // Purge cache on startup
 		ObjectMapper mapper = new ObjectMapper();
 		JavaType transactionsType = mapper.getTypeFactory().constructType(new TypeReference<Iterable<Translation>>(){});
 		return builder -> builder
-				.withCacheConfiguration("translations",
-						RedisCacheConfiguration.defaultCacheConfig()
-								.entryTtl(Duration.ofMillis(translationsCacheDuration))
-								.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(transactionsType))))
-				.withCacheConfiguration("translation",
-						RedisCacheConfiguration.defaultCacheConfig()
-								.entryTtl(Duration.ofMillis(translationCacheDuration))
-								.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(Translation.class))))
-				.withCacheConfiguration("image",
-						RedisCacheConfiguration.defaultCacheConfig()
-								.entryTtl(Duration.ofMillis(imageCacheDuration))
-								.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(Image.class))))
-				.withCacheConfiguration("buckets",
-						RedisCacheConfiguration.defaultCacheConfig()
-								.entryTtl(Duration.ofSeconds(36000))
-								.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(Bucket.class))));
+				.withCacheConfiguration("translations", getConfiguration(translationsCacheDuration, transactionsType))
+				.withCacheConfiguration("translations", getConfiguration(translationsCacheDuration, Translation.class))
+				.withCacheConfiguration("image", getConfiguration(translationsCacheDuration, Image.class))
+				.withCacheConfiguration("buckets", getConfiguration(translationsCacheDuration, Bucket.class))
+		;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private RedisCacheConfiguration getConfiguration(final long duration, final Object type) {
+		RedisCacheConfiguration config =  RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMillis(duration));
+		Jackson2JsonRedisSerializer serializer = null;
+		if(type instanceof JavaType) {
+			serializer = new Jackson2JsonRedisSerializer((JavaType) type);
+		}else {
+			serializer = new Jackson2JsonRedisSerializer((Class<?>) type);
+		}
+		return config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer));
 	}
 	
 	/**

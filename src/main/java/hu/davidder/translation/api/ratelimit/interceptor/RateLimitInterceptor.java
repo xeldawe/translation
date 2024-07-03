@@ -71,10 +71,13 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			response.addHeader(isGlobal ? Headers.X_RATE_LIMIT_GLOBAL_RETRY_AFTER_SECONDS.name() : Headers.X_RATE_LIMIT_RETRY_AFTER_SECONDS.name(),
 					String.valueOf(waitForRefill));
+			response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(),
+					isGlobal ? "Stop spamming" : "You have exhausted your API Request Quota"); // 429
 			return false;
 		}
 	}
 
+	//TODO
 	private RateLimit getRateLimit(final String rateLimit, final String ipAddress, final RateLimitType type) {
 
 		RateLimit key = null;
@@ -90,6 +93,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 		return key;
 	}
 
+	@Deprecated
 	private RateLimit getDummyRateLimit(final String rateLimit, final String ipAddress, final RateLimitType type) {
 		RateLimit key = null;
 		if (rateLimit.startsWith("123456")) { // TODO

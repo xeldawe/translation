@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import hu.davidder.translations.translation.entity.Translation;
+import hu.davidder.translations.translation.entity.Type;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -33,6 +34,20 @@ public class CustomTranslationRepositoryImpl implements CustomTranslationReposit
         TypedQuery<Translation> query = entityManager.createQuery(cq);
         return query.getSingleResult();
 	}
+	
+	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true, propagation = Propagation.REQUIRED)
+	public Translation findByIdAndType(long id, Type type) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Translation> cq = cb.createQuery(Translation.class);
+        Root<Translation> translation = cq.from(Translation.class);
+        Predicate keyPredicate = cb.equal(translation.get("id"), id);
+        Predicate typePredicate = cb.equal(translation.get("type"), type);
+        cq.where(keyPredicate,keyPredicate);
+        TypedQuery<Translation> query = entityManager.createQuery(cq);
+        return query.getSingleResult();
+	}
+
 
 }
 

@@ -60,6 +60,11 @@ public class ImageService {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
+
+	public ImageRepository getImageRepository() {
+		return imageRepository;
+	}
+	
+	
 }

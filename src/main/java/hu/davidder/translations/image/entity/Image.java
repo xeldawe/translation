@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import hu.davidder.translations.translation.entity.Translation;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -29,9 +30,9 @@ public class Image implements Serializable{
 	@GeneratedValue
 	private Long id;
 	@JsonBackReference
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.PERSIST})
 	@Fetch(FetchMode.JOIN)
-	@JoinColumn(name = "translation_id", nullable = false)
+	@JoinColumn(name = "translation_id", nullable = true)
 	private Translation translation;
 	private String name;
 	private byte[] value;

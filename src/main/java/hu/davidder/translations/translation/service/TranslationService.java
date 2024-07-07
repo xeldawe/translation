@@ -1,6 +1,5 @@
 package hu.davidder.translations.translation.service;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,9 +13,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -31,9 +32,11 @@ import hu.davidder.translations.image.service.ImageService;
 import hu.davidder.translations.translation.entity.Translation;
 import hu.davidder.translations.translation.entity.Type;
 import hu.davidder.translations.translation.repository.TranslationRepository;
+import jakarta.persistence.Transient;
 
 @Service
 @CacheConfig
+@PropertySource("classpath:image-endpoint.properties")
 public class TranslationService {
 
 	@Lazy
@@ -43,6 +46,9 @@ public class TranslationService {
 	@Lazy
 	@Autowired
 	private ImageService imageService;
+
+	@Value("${image.base.url}")
+	private String imageUrlPrefix;
 
 	@Deprecated
 	public void initDummyData() throws JsonMappingException, JsonProcessingException, IOException {
@@ -80,7 +86,7 @@ public class TranslationService {
 				imgs.add(image2);
 				imgs.add(image);
 				t.setImages(imgs);
-				t.setValue("http://localhost:8080/api/v1/images/" + name);
+				t.setValue(name);
 			} else {
 				t.setType(Type.TEXT);
 				t.setValue(v);
@@ -88,34 +94,52 @@ public class TranslationService {
 			if (v.length() < 20000) // TODO
 				data.add(t);
 		});
-		//FORWARD
+		// FORWARD
 		data.get(3).setForwarded(data.get(2));
-		
+
 		repository.saveAll(data);
 	}
 
 	@Cacheable(value = "translations")
 	public Iterable<Translation> findAll() {
-		return repository.findAll();
+		return replaceLinks(repository.findAll());
 	}
 
 	@Cacheable(value = "translation", key = "#key")
 	public Translation findByKey(String key) {
-		return repository.findByKey(key);
+		return replaceLink(repository.findByKey(key));
 	}
-	
+
+	public Translation findByIdAndType(long id, Type type) {
+		return replaceLink(repository.findByIdAndType(id, type));
+	}
+
 	@Async("SSE")
 	public void sendKeyChangeEvents(SseEmitter emitter, String key) {
 		try {
-		   	for(int i = 0; i < 10; i++) {
-		   		emitter.send(repository.findByKey(key)); //TODO
-		   		emitter.send("Changed "+ System.currentTimeMillis());
-		   		TimeUnit.SECONDS.sleep(2);
-		   	}
-		   	emitter.complete();
+			for (int i = 0; i < 10; i++) {
+				emitter.send(repository.findByKey(key)); // TODO
+				emitter.send("Changed " + System.currentTimeMillis());
+				TimeUnit.SECONDS.sleep(2);
+			}
+			emitter.complete();
 		} catch (IOException | InterruptedException e) {
-		   	emitter.completeWithError(e);
+			emitter.completeWithError(e);
 		}
 	}
+
+	private Iterable<Translation> replaceLinks(Iterable<Translation> data) {
+		List<Translation> res = new LinkedList<>();
+		for (Translation d : data) {
+			res.add(replaceLink(d));
+		}
+		return res;
+	}
 	
+	private Translation replaceLink(Translation d) {
+		if (d.getType().equals(Type.IMAGE)) {
+			d.setValue(imageUrlPrefix + d.getValue());
+		}
+		return d;
+	}
 }

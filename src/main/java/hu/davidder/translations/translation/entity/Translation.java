@@ -23,7 +23,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -48,20 +47,22 @@ public class Translation implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Id
 	@GeneratedValue
 	private Long id;
 	@Column(length = 2000)
 	private String key;
-	@Column(length = 20000)
+	@Column(length = 20000,unique = true)
 	private String value;
 	@Enumerated(EnumType.STRING)
 	private Type type;
 	@JsonIgnore
 	@JsonManagedReference
 	@Fetch(FetchMode.JOIN)
-	@OneToMany(mappedBy = "translation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "translation", fetch = FetchType.LAZY, cascade = {
+			CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE
+	})
 	private List<Image> images;
 	@JsonIgnore
 	private boolean deleted = false;
@@ -88,7 +89,7 @@ public class Translation implements Serializable{
 	}
 
 	public String getValue() {
-		return forwarded==null?value:forwarded.value;
+		return forwarded==null?this.value:forwarded.value;
 	}
 
 	public void setValue(String value) {

@@ -3,6 +3,7 @@
 services:
   postgres:
     image: 'postgres:latest'
+    container_name: db
     environment:
       - 'POSTGRES_DB=testdb'
       - 'POSTGRES_PASSWORD=test'

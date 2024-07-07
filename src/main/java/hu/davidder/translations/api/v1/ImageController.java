@@ -69,7 +69,7 @@ public class ImageController {
 				.body(response);
 	}
 
-	@PutMapping("/create/{translationId}")
+	@PutMapping("${create}/{translationId}")
 	@Operation(summary = "Adding or replacing image on specific IMAGE type translation", description = "TBC")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),

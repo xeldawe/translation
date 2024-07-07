@@ -101,10 +101,10 @@ public class TranslationController {
 		return emitter;
 	}
 	 
-	@PostMapping("/create-text")
+	@PostMapping("${create.text}")
 	@Operation(summary = "Create translation - Text type", description = "TBC")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> create(@RequestBody TranslationTextInsertBody translationInsertBody) {
 		Translation newTranslation = new Translation(translationInsertBody.getKey(), translationInsertBody.getValue(), Type.TEXT);
@@ -112,10 +112,10 @@ public class TranslationController {
 		return ResponseEntity.ok(newTranslation);
 	}
 
-	@PostMapping("/create-image")
+	@PostMapping("${create.image}")
 	@Operation(summary = "Create translation - Image type", description = "TBC")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> create(@RequestBody TranslationImageInsertBody translationInsertBody) {
 		Translation newTranslation = new Translation();

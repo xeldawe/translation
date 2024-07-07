@@ -1,3 +1,17 @@
-Translation app for https://www.npmjs.com/package/@ngx-translate/core
-+ include a CDN for serving images with different resolutions
-+ paywall system
+# Translation
+## Translation & CDN for LTS frontend frameworks
+
+Translation is 100% compatible with @ngx-translate/core
+Serving different images/translations every different lang or market
+
+## Phase 1 - BE - Java backend
+- Market base translations (with image urls) 
+- Customizable endpoints
+- Customizable rate limits
+- CDN with different image resulution with low response time
+
+## Phase 2 - FE Angular (Coming soon)
+- Angular presentation page with market and lang selector for serving translations and images
+
+## Phase 3 - FE Admin - Angular (Coming soon)
+- Angular admin panel

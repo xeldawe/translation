@@ -84,7 +84,7 @@ public class ImageController {
 				Iterable<Image> res = imageService.createImages(imageInsertBody.getUrl(),imageInsertBody.getTargetSizes(),translation);
 				imageService.getImageRepository().saveAll(res);
 				for (Image img : res) {
-					imageUrls.add(imageUrlPrefix + img.getName());
+					imageUrls.add(imageUrlPrefix + img.getName()+"?targetSize="+img.getTargetSize());
 				}
 			} catch (Exception e) {
 				ResponseEntity.internalServerError().build();

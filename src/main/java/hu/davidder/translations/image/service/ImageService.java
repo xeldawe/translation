@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -17,8 +20,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import hu.davidder.translations.image.entity.Image;
+import hu.davidder.translations.image.entity.ImageInsertBody;
 import hu.davidder.translations.image.entity.ImageType;
 import hu.davidder.translations.image.repository.ImageRepository;
+import hu.davidder.translations.translation.entity.Translation;
+import hu.davidder.translations.translation.entity.TranslationImageInsertBody;
 
 @Service
 @CacheConfig
@@ -67,5 +73,31 @@ public class ImageService {
 		return imageRepository;
 	}
 	
+	public List<Image> createImages(ImageInsertBody imageInsertBody, Translation translation){
+		return createImages(imageInsertBody.getUrl(), imageInsertBody.getTargetSizes(), translation);
+	}
+	
+	public List<Image> createImages(String url, List<Integer> sizes, Translation translation){
+		byte[] imageByteArray = getImage(url);
+		String name = UUID.randomUUID().toString();
+		ImageType type = ImageType.PNG;
+		if (url.contains(ImageType.JPG.value)) {
+			type = ImageType.JPG;
+		}
+		if(sizes.isEmpty() || !sizes.contains(0)) {
+			sizes.add(0);
+		}
+		List<Image> images = new LinkedList<>();
+		for (int targetSieze : sizes) {
+			Image image = new Image();
+			image.setTargetSize(targetSieze);
+			image.setTranslation(translation);
+			image.setValue(imageByteArray);
+			image.setName(name);
+			image.setType(type);
+			images.add(image);
+		}
+		return images;
+	}
 	
 }

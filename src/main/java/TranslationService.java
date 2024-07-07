@@ -1,4 +1,4 @@
-package hu.davidder.translations.translation.service;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -51,9 +51,9 @@ public class TranslationService {
 	private String imageUrlPrefix;
 
 	@Deprecated
-	public void loadFromFile(String path) throws JsonMappingException, JsonProcessingException, IOException {
+	public void initDummyData() throws JsonMappingException, JsonProcessingException, IOException {
 		Map<String, String> result = new ObjectMapper().readValue(
-				FileUtils.readFileToString(new File(path),
+				FileUtils.readFileToString(new File("C:\\Users\\Xel\\Desktop\\Project\\test\\translation.json"),
 						StandardCharsets.UTF_8),
 				HashMap.class);
 		List<Translation> data = new LinkedList<>();
@@ -70,13 +70,20 @@ public class TranslationService {
 					type = ImageType.JPG;
 				}
 				String name = UUID.randomUUID().toString();
+				Image image2 = new Image();
+				image2.setTargetSize(0);
+				image2.setTranslation(t);
+				image2.setValue(imageService.getImage(v));
+				image2.setName(name);
+				image2.setType(type);
 				Image image = new Image();
-				image.setTargetSize(0);
+				image.setTargetSize(128);
 				image.setTranslation(t);
 				image.setValue(imageService.resizeImage(v, 128));
 				image.setName(name);
 				image.setType(type);
 				List<Image> imgs = new ArrayList<>();
+				imgs.add(image2);
 				imgs.add(image);
 				t.setImages(imgs);
 				t.setValue(name);
@@ -87,6 +94,9 @@ public class TranslationService {
 			if (v.length() < 20000) // TODO
 				data.add(t);
 		});
+		// FORWARD
+		data.get(3).setForwarded(data.get(2));
+
 		repository.saveAll(data);
 	}
 
@@ -118,7 +128,7 @@ public class TranslationService {
 		}
 	}
 
-	public Iterable<Translation> replaceLinks(Iterable<Translation> data) {
+	private Iterable<Translation> replaceLinks(Iterable<Translation> data) {
 		List<Translation> res = new LinkedList<>();
 		for (Translation d : data) {
 			res.add(replaceLink(d));
@@ -126,16 +136,10 @@ public class TranslationService {
 		return res;
 	}
 	
-	public Translation replaceLink(Translation d) {
+	private Translation replaceLink(Translation d) {
 		if (d.getType().equals(Type.IMAGE)) {
 			d.setValue(imageUrlPrefix + d.getValue());
 		}
 		return d;
 	}
-
-	public TranslationRepository getRepository() {
-		return repository;
-	}
-	
-	
 }

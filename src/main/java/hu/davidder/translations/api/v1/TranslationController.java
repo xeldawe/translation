@@ -1,6 +1,6 @@
 package hu.davidder.translations.api.v1;
 
-import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -11,12 +11,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import hu.davidder.translations.image.entity.Image;
+import hu.davidder.translations.image.service.ImageService;
 import hu.davidder.translations.translation.entity.Translation;
+import hu.davidder.translations.translation.entity.TranslationImageInsertBody;
+import hu.davidder.translations.translation.entity.TranslationTextInsertBody;
+import hu.davidder.translations.translation.entity.Type;
 import hu.davidder.translations.translation.service.TranslationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,8 +44,12 @@ public class TranslationController {
 	@Autowired
     private TranslationService translationService;
 	
+	@Lazy
+	@Autowired
+	private ImageService imageService;
+	
     
-	@GetMapping(value = "${findAll.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "${find.all.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get all translations", description = "This will query every translations")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Everything is fine",
@@ -60,7 +71,7 @@ public class TranslationController {
 	}
 	
 	
-	@GetMapping(value = "${findByKey.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE) 
+	@GetMapping(value = "${find.by.key.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE) 
 	@Operation(summary = "Get translation by key", description = "This will query translation with a specific key")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Everything is fine",
@@ -73,18 +84,7 @@ public class TranslationController {
 				.ok()
 				.body(translationService.findByKey(key));
 	}
-	
-	@Deprecated
-	@GetMapping("init")
-	public void init() {
-		try {
-			translationService.initDummyData();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-	 
+
 	
 	//TODO fix this dummy 
 	@GetMapping(value = "/stream/change", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -101,6 +101,31 @@ public class TranslationController {
 		return emitter;
 	}
 	 
+	@PostMapping("/create-text")
+	@Operation(summary = "Create translation - Text type", description = "TBC")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
+	public ResponseEntity<Translation> create(@RequestBody TranslationTextInsertBody translationInsertBody) {
+		Translation newTranslation = new Translation(translationInsertBody.getKey(), translationInsertBody.getValue(), Type.TEXT);
+		translationService.getRepository().save(newTranslation);
+		return ResponseEntity.ok(newTranslation);
+	}
 
+	@PostMapping("/create-image")
+	@Operation(summary = "Create translation - Image type", description = "TBC")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
+	public ResponseEntity<Translation> create(@RequestBody TranslationImageInsertBody translationInsertBody) {
+		Translation newTranslation = new Translation();
+		newTranslation.setType(Type.IMAGE);
+		List<Image> images = imageService.createImages(translationInsertBody.getValue(), newTranslation);
+		newTranslation.setImages(images);
+		newTranslation.setValue(images.get(0).getName());
+		newTranslation.setKey(translationInsertBody.getKey());
+		translationService.getRepository().save(newTranslation);
+		return ResponseEntity.ok(translationService.replaceLink(newTranslation));
+	}
 }
 

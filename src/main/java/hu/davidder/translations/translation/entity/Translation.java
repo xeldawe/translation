@@ -26,9 +26,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "translation")
+@Table(name = "translation", uniqueConstraints={@UniqueConstraint(columnNames={"key"})})
 public class Translation implements Serializable{
 	
 	/**
@@ -43,6 +44,7 @@ public class Translation implements Serializable{
 		this.type = type;
 	}
 
+
 	public Translation() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -53,7 +55,7 @@ public class Translation implements Serializable{
 	private Long id;
 	@Column(length = 2000)
 	private String key;
-	@Column(length = 20000,unique = true)
+	@Column(length = 20000)
 	private String value;
 	@Enumerated(EnumType.STRING)
 	private Type type;
@@ -61,7 +63,7 @@ public class Translation implements Serializable{
 	@JsonManagedReference
 	@Fetch(FetchMode.JOIN)
 	@OneToMany(mappedBy = "translation", fetch = FetchType.LAZY, cascade = {
-			CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE
+			CascadeType.ALL
 	})
 	private List<Image> images;
 	@JsonIgnore

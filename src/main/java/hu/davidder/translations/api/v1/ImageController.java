@@ -2,7 +2,6 @@ package hu.davidder.translations.api.v1;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,28 +81,8 @@ public class ImageController {
 			Translation translation = translationService.findByIdAndType(translationId, Type.IMAGE);
 			List<String> imageUrls = new LinkedList<>();
 			try {
-				String url = imageInsertBody.getUrl();
-				byte[] imageByteArray = imageService.getImage(url);
-				String name = UUID.randomUUID().toString();
-				ImageType type = ImageType.PNG;
-				if (url.contains(ImageType.JPG.value)) {
-					type = ImageType.JPG;
-				}
-				List<Integer> sizes = imageInsertBody.getTargetSizes();
-				if(sizes.isEmpty() || !sizes.contains(0)) {
-					sizes.add(0);
-				}
-				List<Image> images = new LinkedList<>();
-				for (int targetSieze : sizes) {
-					Image image = new Image();
-					image.setTargetSize(targetSieze);
-					image.setTranslation(translation);
-					image.setValue(imageByteArray);
-					image.setName(name);
-					image.setType(type);
-					images.add(image);
-				}
-				Iterable<Image> res = imageService.getImageRepository().saveAll(images);
+				Iterable<Image> res = imageService.createImages(imageInsertBody.getUrl(),imageInsertBody.getTargetSizes(),translation);
+				imageService.getImageRepository().saveAll(res);
 				for (Image img : res) {
 					imageUrls.add(imageUrlPrefix + img.getName());
 				}

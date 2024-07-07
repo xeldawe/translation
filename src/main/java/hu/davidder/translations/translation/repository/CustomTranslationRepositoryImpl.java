@@ -30,7 +30,8 @@ public class CustomTranslationRepositoryImpl implements CustomTranslationReposit
         CriteriaQuery<Translation> cq = cb.createQuery(Translation.class);
         Root<Translation> translation = cq.from(Translation.class);
         Predicate keyPredicate = cb.equal(translation.get("key"), key);
-        cq.where(keyPredicate);
+        Predicate isNotDeleted = cb.equal(translation.get("deleted"), false);
+        cq.where(keyPredicate,isNotDeleted);
         TypedQuery<Translation> query = entityManager.createQuery(cq);
         return query.getSingleResult();
 	}
@@ -43,11 +44,11 @@ public class CustomTranslationRepositoryImpl implements CustomTranslationReposit
         Root<Translation> translation = cq.from(Translation.class);
         Predicate keyPredicate = cb.equal(translation.get("id"), id);
         Predicate typePredicate = cb.equal(translation.get("type"), type);
-        cq.where(keyPredicate,keyPredicate);
+        Predicate isNotDeleted = cb.equal(translation.get("deleted"), false);
+        cq.where(keyPredicate,typePredicate,isNotDeleted);
         TypedQuery<Translation> query = entityManager.createQuery(cq);
         return query.getSingleResult();
 	}
-
 
 }
 

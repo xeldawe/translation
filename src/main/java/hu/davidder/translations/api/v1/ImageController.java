@@ -86,7 +86,7 @@ public class ImageController {
 				byte[] imageByteArray = imageService.getImage(url);
 				String name = "" + UUID.randomUUID();
 				ImageType type = ImageType.PNG;
-				if (url.contains(".jpg")) {
+				if (url.contains(ImageType.JPG.value)) {
 					type = ImageType.JPG;
 				}
 				List<Integer> sizes = imageInsertBody.getTargetSizes();

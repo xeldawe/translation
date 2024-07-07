@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import hu.davidder.translations.image.entity.Image;
+import hu.davidder.translations.image.entity.ImageType;
 import hu.davidder.translations.image.repository.ImageRepository;
 
 @Service
@@ -47,9 +48,9 @@ public class ImageService {
 			if (withResize && image != null)
 				image = Scalr.resize(image, res);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			String type = "PNG";
-			if (url.contains(".jpg")) {
-				type = "JPG";
+			String type = ImageType.PNG.name;
+			if (url.contains(ImageType.JPG.value)) {
+				type = ImageType.JPG.name;
 			}
 			if (image == null)
 				return null;

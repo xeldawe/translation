@@ -3,18 +3,16 @@ package hu.davidder.translations.image.entity;
 
 public enum ImageType {
 
-	PNG("PNG"), 
-	JPG("JPG"),
+	PNG("PNG",".png"), 
+	JPG("JPG", ".jpg"),
 	;
 
-	private final String name;
+	public final String name;
+	public final String value;
 
-	private ImageType(String name) {
+	private ImageType(String name, String value) {
 		this.name = name;
+		this.value = value;
 	}
 
-	public String getName() {
-		return name;
-	}
-	
 }

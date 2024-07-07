@@ -66,10 +66,10 @@ public class TranslationService {
 			if (v.startsWith("http")) {
 				t.setType(Type.IMAGE);
 				ImageType type = ImageType.PNG;
-				if (v.contains(".jpg")) {
+				if (v.contains(ImageType.JPG.value)) {
 					type = ImageType.JPG;
 				}
-				String name = "" + UUID.randomUUID();
+				String name = UUID.randomUUID().toString();
 				Image image2 = new Image();
 				image2.setTargetSize(0);
 				image2.setTranslation(t);

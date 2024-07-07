@@ -84,7 +84,7 @@ public class ImageController {
 			try {
 				String url = imageInsertBody.getUrl();
 				byte[] imageByteArray = imageService.getImage(url);
-				String name = "" + UUID.randomUUID();
+				String name = UUID.randomUUID().toString();
 				ImageType type = ImageType.PNG;
 				if (url.contains(ImageType.JPG.value)) {
 					type = ImageType.JPG;

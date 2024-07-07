@@ -8,7 +8,7 @@ Serving different images/translations every different lang or market
 - Market base translations (with image urls) 
 - Customizable endpoints
 - Customizable rate limits
-- CDN with different image resulution with low response time
+- CDN with different image resolution with low response time
 
 ## Phase 2 - FE Angular (Coming soon)
 - Angular presentation page with market and lang selector for serving translations and images

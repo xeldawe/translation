@@ -100,7 +100,8 @@ public class TranslationController {
 	    translationService.sendKeyChangeEvents(emitter, "translation-1-text");
 		return emitter;
 	}
-	 
+	
+	//TODO HANDLE ERRORS
 	@PostMapping("${create.text}")
 	@Operation(summary = "Create translation - Text type", description = "TBC")
 	@ApiResponses(value = {
@@ -112,6 +113,7 @@ public class TranslationController {
 		return ResponseEntity.ok(newTranslation);
 	}
 
+	//TODO HANDLE ERRORS
 	@PostMapping("${create.image}")
 	@Operation(summary = "Create translation - Image type", description = "TBC")
 	@ApiResponses(value = {

@@ -72,7 +72,7 @@ public class ImageController {
 	@PutMapping("${create}/{translationId}")
 	@Operation(summary = "Adding or replacing image on specific IMAGE type translation", description = "TBC")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = List.class))),
 			@ApiResponse(responseCode = "404", description = "Transaction not found or this is not IMAGE type", content = @Content(schema = @Schema(implementation = Void.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<List<String>> saveImage(@PathVariable("translationId") Long translationId,

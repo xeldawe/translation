@@ -78,7 +78,6 @@ public class ImageService {
 	}
 	
 	public List<Image> createImages(String url, List<Integer> sizes, Translation translation){
-		byte[] imageByteArray = getImage(url);
 		String name = UUID.randomUUID().toString();
 		ImageType type = ImageType.PNG;
 		if (url.contains(ImageType.JPG.value)) {
@@ -92,7 +91,7 @@ public class ImageService {
 			Image image = new Image();
 			image.setTargetSize(targetSieze);
 			image.setTranslation(translation);
-			image.setValue(imageByteArray);
+			image.setValue(resizeImage(url, targetSieze));
 			image.setName(name);
 			image.setType(type);
 			images.add(image);

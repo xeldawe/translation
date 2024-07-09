@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class MarketInterceptor implements HandlerInterceptor {
 
 	private static final String DEFAULT_TENANT = HibernateConfig.PUBLIC;
-	private static final ThreadLocal<String> currentTenant = new InheritableThreadLocal<>();
+	public static final ThreadLocal<String> currentTenant = new InheritableThreadLocal<>();
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

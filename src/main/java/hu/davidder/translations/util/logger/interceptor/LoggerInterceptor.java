@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import hu.davidder.translations.core.interceptors.MarketInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -18,14 +19,14 @@ public class LoggerInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		logger.info(
-				"Pre ->[" + request.getMethod() + "]" + request.getRequestURI() + "[" + request.getRemoteAddr() + "]");
+				"Pre ->["+MarketInterceptor.currentTenant.get()+"][" + request.getMethod() + "]" + request.getRequestURI() + "[" + request.getRemoteAddr() + "]");
 		return true;
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		logger.info("Post -> [" + request.getMethod() + "]" + "[" + response.getStatus() + "]" + request.getRequestURI()
+		logger.info("Post -> ["+MarketInterceptor.currentTenant.get()+"][" + request.getMethod() + "]" + "[" + response.getStatus() + "]" + request.getRequestURI()
 				+ "[" + request.getRemoteAddr() + "]");
 
 	}
@@ -34,7 +35,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		if (ex != null) {
-			logger.error("After ->[" + request.getMethod() + "]" + request.getRequestURI() + "["
+			logger.error("After ->["+MarketInterceptor.currentTenant.get()+"][" + request.getMethod() + "]" + request.getRequestURI() + "["
 					+ request.getRemoteAddr() + "]" + "[exception: " + ex + "]");
 			ex.printStackTrace();
 		}

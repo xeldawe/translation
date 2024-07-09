@@ -33,10 +33,12 @@ public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		InterceptorRegistration logger = registry.addInterceptor(loggerInterceptor);
 		InterceptorRegistration market = registry.addInterceptor(marketInterceptor);
-		logger.addPathPatterns(Arrays.asList(pathPatterns));
 		market.addPathPatterns(Arrays.asList(pathPatterns));
+		
+		//LAST
+		InterceptorRegistration logger = registry.addInterceptor(loggerInterceptor);
+		logger.addPathPatterns(Arrays.asList(pathPatterns));
 	}
 
 }

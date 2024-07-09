@@ -38,7 +38,7 @@ public class HibernateConfig {
 	private String hbm2ddl;
 	public final static String PUBLIC = "public";
 	
-	private static Map<String, LocalContainerEntityManagerFactoryBean> factorys = new HashMap<>(); //beacuse we want to use hbm2ddl.auto with different schemas
+	private static Map<String, LocalContainerEntityManagerFactoryBean> factories = new HashMap<>(); //beacuse we want to use hbm2ddl.auto with different schemas
 
 	@Bean
 	@Primary
@@ -68,7 +68,7 @@ public class HibernateConfig {
 			}else {
 				logger.info("Init market -> {}",schema);
 			}
-			factorys.put(schema, em);
+			factories.put(schema, em);
 		}
 		return primary;
 	}
@@ -77,9 +77,9 @@ public class HibernateConfig {
 		   if(schema == null || schema.isBlank()){
 			   schema = PUBLIC;
 		   }
-		   LocalContainerEntityManagerFactoryBean em = factorys.get(schema);
+		   LocalContainerEntityManagerFactoryBean em = factories.get(schema);
 		   if(em == null) {
-			   em = factorys.get(PUBLIC);
+			   em = factories.get(PUBLIC);
 		   }
 		   try {
 			return em.getDataSource().getConnection();

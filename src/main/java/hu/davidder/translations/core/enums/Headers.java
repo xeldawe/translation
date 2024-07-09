@@ -15,6 +15,7 @@ public enum Headers {
 	X_RATE_LIMIT_REMAINING("X-Rate-Limit-Remaining"),  
 	X_API_KEY("X-Api-Key"), 
 	X_TIER("X-Tier"),
+	X_MARKET("X-Market"),
 	;
 
 	private final String name;

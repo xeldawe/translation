@@ -26,6 +26,8 @@ import hu.davidder.translations.translation.entity.TranslationTextInsertBody;
 import hu.davidder.translations.translation.entity.Type;
 import hu.davidder.translations.translation.service.TranslationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,7 +52,14 @@ public class TranslationController {
 	
     
 	@GetMapping(value = "${find.all.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(summary = "Get all translations", description = "This will query every translations")
+	@Operation(summary = "Get all translations", description = "This will query every translations",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.HEADER,
+				name = "X-Market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Everything is fine",
 					content = @Content(schema = @Schema(implementation = Iterable.class))),
@@ -116,7 +125,14 @@ public class TranslationController {
 
 	//TODO HANDLE ERRORS
 	@PostMapping("${create.image}")
-	@Operation(summary = "Create translation - Image type", description = "TBC")
+	@Operation(summary = "Create translation - Image type", description = "TBC",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.HEADER,
+				name = "X-Market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })

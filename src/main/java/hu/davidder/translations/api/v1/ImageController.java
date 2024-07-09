@@ -28,6 +28,10 @@ import hu.davidder.translations.translation.entity.Translation;
 import hu.davidder.translations.translation.entity.Type;
 import hu.davidder.translations.translation.service.TranslationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -56,7 +60,14 @@ public class ImageController {
 
 	@GetMapping(value = "${find.image.by.name.endpoint}", produces = { MediaType.IMAGE_PNG_VALUE,
 			MediaType.IMAGE_JPEG_VALUE })
-	@Operation(summary = "Return image from database", description = "TBC")
+	@Operation(summary = "Return image from database", description = "TBC",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.HEADER,
+				name = "X-Market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
@@ -69,8 +80,17 @@ public class ImageController {
 				.body(response);
 	}
 
+
 	@PutMapping("${create}/{translationId}")
-	@Operation(summary = "Adding or replacing image on specific IMAGE type translation", description = "TBC")
+	@Operation(summary = "Adding or replacing image on specific IMAGE type translation", description = "TBC", 
+	parameters = 
+		@Parameter(
+			in = ParameterIn.HEADER,
+			name = "X-Market",
+			description = "Custom market. Example: en-th",
+			required = false,
+			schema = @Schema(type = "string"))
+	)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = List.class))),
 			@ApiResponse(responseCode = "404", description = "Transaction not found or this is not IMAGE type", content = @Content(schema = @Schema(implementation = Void.class))),

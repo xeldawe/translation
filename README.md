@@ -24,9 +24,11 @@ Serving different images/translations every different lang or market
 ![image](https://github.com/xeldawe/translation/assets/57683043/7aa8baca-7866-4a59-a54e-5ccdc5c2784a)
 ![image](https://github.com/xeldawe/translation/assets/57683043/78a8f123-abc8-4980-af0a-d255ad7b9484)
 ![image](https://github.com/xeldawe/translation/assets/57683043/5fa4077e-5cd3-4f56-95af-08119cb235d9)
+# global rate limit r/s ->
 ![image](https://github.com/xeldawe/translation/assets/57683043/14d6f10c-4cef-466f-bf5c-db4831c8adf2)
+# tier limit ->
 ![image](https://github.com/xeldawe/translation/assets/57683043/427ebd20-6a2e-48fb-9c66-ccd306f42a28)
 ![image](https://github.com/xeldawe/translation/assets/57683043/282a7a2d-2d9b-41e2-9529-64ff6a3bf9ae)
 
-# for angular
+# for angular ->
 ![image](https://github.com/xeldawe/translation/assets/57683043/885e4617-8ab7-4f06-aa84-038b13b21ec6)

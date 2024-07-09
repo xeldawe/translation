@@ -24,6 +24,7 @@ import hu.davidder.translations.image.entity.ImageInsertBody;
 import hu.davidder.translations.image.entity.ImageType;
 import hu.davidder.translations.image.repository.ImageRepository;
 import hu.davidder.translations.translation.entity.Translation;
+import hu.davidder.translations.translation.service.TranslationService;
 
 @Service
 @CacheConfig
@@ -32,6 +33,10 @@ public class ImageService {
 	@Lazy
 	@Autowired
 	private ImageRepository imageRepository;
+	
+	@Lazy
+	@Autowired
+	private TranslationService translationService;
 	
 	@Cacheable(value = "image", keyGenerator="imageKeyGenerator", unless="#result == null")
 	public Image getCdnImage(String name, Integer targetSize) {
@@ -92,12 +97,16 @@ public class ImageService {
 		for (int targetSieze : sizes) {
 			Image image = new Image();
 			image.setTargetSize(targetSieze);
-			image.setTranslation(translation);
 			image.setValue(resizeImage(url, targetSieze));
 			image.setName(name);
 			image.setType(type);
 			images.add(image);
+			if(targetSieze == 0) {
+				translation.setValue(name);
+			}
 		}
+		translation.setImages(images);
+		translationService.getRepository().save(translation);
 		return images;
 	}
 	

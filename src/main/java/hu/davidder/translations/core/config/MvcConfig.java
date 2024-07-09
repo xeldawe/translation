@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import hu.davidder.translations.core.interceptors.MarketInterceptor;
 import hu.davidder.translations.util.logger.interceptor.LoggerInterceptor;
 
 @Configuration
@@ -25,11 +26,17 @@ public class MvcConfig implements WebMvcConfigurer {
 	@Autowired
 	@Lazy
 	private LoggerInterceptor loggerInterceptor;
+	
+	@Autowired
+	@Lazy
+	private MarketInterceptor marketInterceptor;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		InterceptorRegistration interceptor = registry.addInterceptor(loggerInterceptor);
-		interceptor.addPathPatterns(Arrays.asList(pathPatterns));
+		InterceptorRegistration logger = registry.addInterceptor(loggerInterceptor);
+		InterceptorRegistration market = registry.addInterceptor(marketInterceptor);
+		logger.addPathPatterns(Arrays.asList(pathPatterns));
+		market.addPathPatterns(Arrays.asList(pathPatterns));
 	}
 
 }

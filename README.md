@@ -45,3 +45,6 @@ Serving different images/translations every different lang or market
 
 ## for angular ->
 ![image](https://github.com/xeldawe/translation/assets/57683043/885e4617-8ab7-4f06-aa84-038b13b21ec6)
+
+## serving 50k translations ->
+![image](https://github.com/xeldawe/translation/assets/57683043/db877346-4ecd-4af8-9d11-d1ba4ea59e47)

@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import hu.davidder.translations.core.config.HibernateConfig;
-
 @Component
 public class MultiTenantProvider implements MultiTenantConnectionProvider<String> {
 	
@@ -23,6 +21,7 @@ public class MultiTenantProvider implements MultiTenantConnectionProvider<String
 	private static final Logger logger = LoggerFactory.getLogger(MultiTenantProvider.class);
 	
     private final DataSource datasource;
+    
 
     public MultiTenantProvider(DataSource dataSource) {
         this.datasource = dataSource;
@@ -42,13 +41,16 @@ public class MultiTenantProvider implements MultiTenantConnectionProvider<String
     @Override
     public Connection getConnection(String tenantIdentifier) throws SQLException {
         logger.info("Get connection for tenant {}", tenantIdentifier);
-        return HibernateConfig.getConnection(tenantIdentifier);
+        final Connection connection = getAnyConnection();
+        connection.setSchema(tenantIdentifier);
+        return connection;
     }
 
     @Override
     public void releaseConnection(String tenantIdentifier, Connection connection) throws SQLException {
         logger.info("Release connection for tenant {}", tenantIdentifier);
-        releaseAnyConnection(HibernateConfig.getConnection(tenantIdentifier));
+        connection.setSchema("public");
+        releaseAnyConnection(connection);
     }
 
     @Override

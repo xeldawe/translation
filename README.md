@@ -16,6 +16,8 @@ Serving different images/translations for every different lang or market
 ## Phase 3 - FE Admin - Angular (Coming soon)
 - Angular admin panel
 
+## TODO better readme :)
+
 ## swagger ->
 ![image](https://github.com/xeldawe/translation/assets/57683043/5f507eb2-469e-463e-a824-2849aade4bf7)
 

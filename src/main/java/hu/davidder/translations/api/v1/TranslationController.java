@@ -71,6 +71,7 @@ public class TranslationController {
 	}
 	
 	
+	@Deprecated
 	@GetMapping(value = "${find.by.key.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE) 
 	@Operation(summary = "Get translation by key", description = "This will query translation with a specific key")
 	@ApiResponses(value = { 

@@ -29,8 +29,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "translation"
-, uniqueConstraints={@UniqueConstraint(columnNames={"key"})})
+@Table(name = "translation", uniqueConstraints={@UniqueConstraint(columnNames={"key"})})
 public class Translation implements Serializable{
 	
 	/**

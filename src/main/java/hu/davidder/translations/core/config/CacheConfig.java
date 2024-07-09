@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import hu.davidder.translations.core.util.MarketKeyGenerator;
 import hu.davidder.translations.image.entity.Image;
 import hu.davidder.translations.translation.entity.Translation;
 import io.github.bucket4j.Bucket;
@@ -95,4 +97,9 @@ public class CacheConfig {
 			    .keyMapper(Mapper.STRING)
 			    .build();
 	}
+	
+    @Bean("marketKeyGenerator")
+    public KeyGenerator keyGenerator() {
+        return new MarketKeyGenerator();
+    }
 }

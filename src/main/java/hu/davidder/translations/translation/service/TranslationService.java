@@ -90,12 +90,13 @@ public class TranslationService {
 		repository.saveAll(data);
 	}
 
-	@Cacheable(value = "translations",unless="#result == null or #result.size()==0")
+	@Cacheable(value = "translations", keyGenerator="marketKeyGenerator",unless="#result == null or #result.size()==0")
 	public Iterable<Translation> findAll() {
 		return replaceLinks(repository.findAll());
 	}
 
-	@Cacheable(value = "translation", key = "#key",unless="#result == null")
+	@Deprecated
+	//@Cacheable(value = "translation", key = "{#key}",unless="#result == null")
 	public Translation findByKey(String key) {
 		return replaceLink(repository.findByKey(key));
 	}

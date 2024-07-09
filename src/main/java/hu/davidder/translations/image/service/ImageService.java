@@ -24,7 +24,6 @@ import hu.davidder.translations.image.entity.ImageInsertBody;
 import hu.davidder.translations.image.entity.ImageType;
 import hu.davidder.translations.image.repository.ImageRepository;
 import hu.davidder.translations.translation.entity.Translation;
-import hu.davidder.translations.translation.entity.TranslationImageInsertBody;
 
 @Service
 @CacheConfig

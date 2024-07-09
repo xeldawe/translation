@@ -27,3 +27,6 @@ Serving different images/translations every different lang or market
 ![image](https://github.com/xeldawe/translation/assets/57683043/14d6f10c-4cef-466f-bf5c-db4831c8adf2)
 ![image](https://github.com/xeldawe/translation/assets/57683043/427ebd20-6a2e-48fb-9c66-ccd306f42a28)
 ![image](https://github.com/xeldawe/translation/assets/57683043/282a7a2d-2d9b-41e2-9529-64ff6a3bf9ae)
+
+# for angular
+![image](https://github.com/xeldawe/translation/assets/57683043/885e4617-8ab7-4f06-aa84-038b13b21ec6)

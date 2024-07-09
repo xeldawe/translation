@@ -24,3 +24,5 @@ Serving different images/translations every different lang or market
 ![image](https://github.com/xeldawe/translation/assets/57683043/7aa8baca-7866-4a59-a54e-5ccdc5c2784a)
 ![image](https://github.com/xeldawe/translation/assets/57683043/78a8f123-abc8-4980-af0a-d255ad7b9484)
 ![image](https://github.com/xeldawe/translation/assets/57683043/5fa4077e-5cd3-4f56-95af-08119cb235d9)
+![image](https://github.com/xeldawe/translation/assets/57683043/14d6f10c-4cef-466f-bf5c-db4831c8adf2)
+![image](https://github.com/xeldawe/translation/assets/57683043/427ebd20-6a2e-48fb-9c66-ccd306f42a28)

@@ -1,4 +1,4 @@
-package hu.davidder.translations.core.util;
+package hu.davidder.translations.core.keygenerators;
 
 import java.lang.reflect.Method;
 

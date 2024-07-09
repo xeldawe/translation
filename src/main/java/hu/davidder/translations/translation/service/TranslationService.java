@@ -32,7 +32,6 @@ import hu.davidder.translations.image.service.ImageService;
 import hu.davidder.translations.translation.entity.Translation;
 import hu.davidder.translations.translation.entity.Type;
 import hu.davidder.translations.translation.repository.TranslationRepository;
-import jakarta.persistence.Transient;
 
 @Service
 @CacheConfig

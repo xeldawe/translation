@@ -25,7 +25,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import hu.davidder.translations.core.util.MarketKeyGenerator;
+import hu.davidder.translations.core.keygenerators.ImageKeyGenerator;
+import hu.davidder.translations.core.keygenerators.MarketKeyGenerator;
 import hu.davidder.translations.image.entity.Image;
 import hu.davidder.translations.translation.entity.Translation;
 import io.github.bucket4j.Bucket;
@@ -99,7 +100,12 @@ public class CacheConfig {
 	}
 	
     @Bean("marketKeyGenerator")
-    public KeyGenerator keyGenerator() {
+    public KeyGenerator marketKeyGenerator() {
         return new MarketKeyGenerator();
+    }
+    
+    @Bean("imageKeyGenerator")
+    public KeyGenerator imageKeyGenerator() {
+        return new ImageKeyGenerator();
     }
 }

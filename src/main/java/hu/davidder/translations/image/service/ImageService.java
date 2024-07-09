@@ -33,7 +33,7 @@ public class ImageService {
 	@Autowired
 	private ImageRepository imageRepository;
 	
-	@Cacheable(value = "image", key = "{#name, #targetSize}", unless="#result == null")
+	@Cacheable(value = "image", keyGenerator="imageKeyGenerator", unless="#result == null")
 	public Image getCdnImage(String name, Integer targetSize) {
 		return imageRepository.getUrl(name, targetSize);
 	}
@@ -48,6 +48,9 @@ public class ImageService {
 
 	@Async
 	byte[] resizeImage(String url, int res, boolean withResize) {
+		if(res == 0) {
+			withResize = false;
+		}
 		try {
 			BufferedImage image = ImageIO.read(new URI(url).toURL());
 			if (withResize && image != null)

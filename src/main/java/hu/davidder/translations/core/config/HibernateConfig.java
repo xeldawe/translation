@@ -22,7 +22,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @PropertySource("classpath:hibernate.properties")
 public class HibernateConfig {
 
-	private static final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
+//	private static final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
 
 	@Value("${batch_size:20}")
 	private String batchSize;

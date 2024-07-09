@@ -1,8 +1,8 @@
 # Translation
 ## Translation & CDN for LTS frontend frameworks
 
-Translation is 100% compatible with @ngx-translate/core
-Serving different images/translations every different lang or market
+Translation is 100% compatible with @ngx-translate/core | 
+Serving different images/translations for every different lang or market
 
 ## Phase 1 - BE - Java backend
 - Market base translations (with image urls) 

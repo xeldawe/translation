@@ -38,15 +38,5 @@ Serving different images/translations for every different lang or market
 ## assign new image with multiple resolution to an existing translation ->
 ![image](https://github.com/xeldawe/translation/assets/57683043/5fa4077e-5cd3-4f56-95af-08119cb235d9)
 
-## global rate limit r/s ->
-![image](https://github.com/xeldawe/translation/assets/57683043/14d6f10c-4cef-466f-bf5c-db4831c8adf2)
-![image](https://github.com/xeldawe/translation/assets/57683043/427ebd20-6a2e-48fb-9c66-ccd306f42a28)
-
-## tier limit ->
-![image](https://github.com/xeldawe/translation/assets/57683043/282a7a2d-2d9b-41e2-9529-64ff6a3bf9ae)
-
 ## for angular ->
 ![image](https://github.com/xeldawe/translation/assets/57683043/885e4617-8ab7-4f06-aa84-038b13b21ec6)
-
-## serving 50k translations ->
-![image](https://github.com/xeldawe/translation/assets/57683043/db877346-4ecd-4af8-9d11-d1ba4ea59e47)

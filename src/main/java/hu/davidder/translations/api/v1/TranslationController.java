@@ -1,6 +1,8 @@
 package hu.davidder.translations.api.v1;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -79,6 +81,23 @@ public class TranslationController {
 		}
 	}
 	
+	@GetMapping(value = "/{market}/translations", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String,String>> getAlLTranslationsForAngular(){
+		Iterable<Translation> data = translationService.findAll();
+		Map<String, String> res = new HashMap<>();
+		for(Translation curr:data) {
+			res.put(curr.getKey(), curr.getValue());
+		}
+		try {
+	        return ResponseEntity
+			.ok()
+			.body(res); 
+		}catch (Exception e) {
+			return ResponseEntity
+					.internalServerError()
+					.build(); 
+		}
+	}
 	
 	@Deprecated
 	@GetMapping(value = "${find.by.key.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE) 

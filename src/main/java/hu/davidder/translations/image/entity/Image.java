@@ -1,14 +1,13 @@
 package hu.davidder.translations.image.entity;
 
-
 import java.io.Serializable;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import hu.davidder.translations.core.base.EntityBase;
 import hu.davidder.translations.translation.entity.Translation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -20,17 +19,15 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "image")
-public class Image implements Serializable{
+public class Image extends EntityBase implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 684811543619976895L;
-	@Id
-	@GeneratedValue
-	private Long id;
+
 	@JsonBackReference
-	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.PERSIST})
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.PERSIST })
 	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name = "translation_id", nullable = true)
 	private Translation translation;
@@ -38,15 +35,11 @@ public class Image implements Serializable{
 	private byte[] value;
 	private Integer targetSize;
 	private ImageType type;
-	@JsonIgnore
-	private boolean deleted = false;
 
 	public Image() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-
 
 	public Image(Translation translation, String name, byte[] value, Integer targetSize, ImageType type) {
 		super();
@@ -57,19 +50,13 @@ public class Image implements Serializable{
 		this.type = type;
 	}
 
-
-
 	public ImageType getType() {
 		return type;
 	}
 
-
-
 	public void setType(ImageType type) {
 		this.type = type;
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -77,14 +64,6 @@ public class Image implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Translation getTranslation() {
@@ -111,12 +90,4 @@ public class Image implements Serializable{
 		this.targetSize = targetSize;
 	}
 
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
-	
 }

@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import hu.davidder.translations.core.base.EntityBase;
 import hu.davidder.translations.image.entity.Image;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,7 +31,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "translation", uniqueConstraints={@UniqueConstraint(columnNames={"key"})})
-public class Translation implements Serializable{
+public class Translation extends EntityBase implements Serializable{
 	
 	/**
 	 * 
@@ -50,9 +51,6 @@ public class Translation implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Id
-	@GeneratedValue
-	private Long id;
 	@Column(length = 2000)
 	private String key;
 	@Column(length = 20000)
@@ -67,21 +65,12 @@ public class Translation implements Serializable{
 	})
 	private List<Image> images;
 	@JsonIgnore
-	private boolean deleted = false;
-	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "forwarded", referencedColumnName = "id", nullable = true)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Translation forwarded = null;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	
 	public String getKey() {
 		return key;
 	}
@@ -117,16 +106,8 @@ public class Translation implements Serializable{
 	@Deprecated
 	@Override
 	public String toString() {
-		return "Translation [id=" + id + ", key=" + key + ", value=" + value + ", type=" + type + ", images=" + images
+		return "Translation [id=" + super.id + ", key=" + key + ", value=" + value + ", type=" + type + ", images=" + images
 				+ "]";
-	}
-
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
 	}
 
 	public Translation getForwarded() {

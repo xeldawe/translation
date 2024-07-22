@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
@@ -25,10 +26,13 @@ public class EntityBase {
 	@JsonIgnore
 	protected boolean status = false;
 
+	@Column(name="CREATE_DATE", nullable = false)
 	@JsonIgnore
 	protected ZonedDateTime createDate = ZonedDateTime.now();
+	@Column(name="MODIFY_DATE", nullable = true)
 	@JsonIgnore
 	protected ZonedDateTime modifyDate;
+	@Column(name="DELETE_DATE", nullable = true)
 	@JsonIgnore
 	protected ZonedDateTime deleteDate;
 

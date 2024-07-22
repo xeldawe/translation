@@ -21,8 +21,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -51,11 +49,12 @@ public class Translation extends EntityBase implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Column(length = 2000)
+	@Column(name="KEY",length = 2000, nullable = false)
 	private String key;
-	@Column(length = 20000)
+	@Column(name="VALUE",length = 20000, nullable = false)
 	private String value;
 	@Enumerated(EnumType.STRING)
+	@Column(name="TYPE", nullable = false)
 	private Type type;
 	@JsonIgnore
 	@JsonManagedReference

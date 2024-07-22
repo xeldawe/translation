@@ -10,9 +10,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import hu.davidder.translations.core.base.EntityBase;
 import hu.davidder.translations.translation.entity.Translation;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -27,13 +26,17 @@ public class Image extends EntityBase implements Serializable {
 	private static final long serialVersionUID = 684811543619976895L;
 
 	@JsonBackReference
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
 	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name = "translation_id", nullable = true)
 	private Translation translation;
+	@Column(name="NAME", nullable = false)
 	private String name;
+	@Column(name="VALUE", nullable = false)
 	private byte[] value;
+	@Column(name="TARGET_SIZE", nullable = false)
 	private Integer targetSize;
+	@Column(name="TYPE", nullable = false)
 	private ImageType type;
 
 	public Image() {

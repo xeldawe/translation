@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -159,7 +160,7 @@ public class TranslationController {
 	}
 	
 	//TODO Config
-	@PostMapping("forward/{originalId}/{newId}")
+	@PatchMapping("forward/{originalId}/{newId}")
 	@Operation(summary = "Forward translation", description = "TBC",
 			parameters = 
 			@Parameter(
@@ -180,7 +181,7 @@ public class TranslationController {
 	}
 	
 	//TODO Config
-	@PostMapping("forward/disable/{id}")
+	@PatchMapping("forward/disable/{id}")
 	@Operation(summary = "Disable translation forwarding", description = "TBC",
 			parameters = 
 			@Parameter(
@@ -226,7 +227,7 @@ public class TranslationController {
 	}
 	
 	//TODO Config
-	@PostMapping("undelete/{id}")
+	@PatchMapping("undelete/{id}")
 	@Operation(summary = "Undelete translation", description = "TBC",
 			parameters = 
 			@Parameter(
@@ -247,7 +248,7 @@ public class TranslationController {
 
 	
 	//TODO Config
-	@PostMapping("status/{id}/{status}")
+	@PatchMapping("status/{id}/{status}")
 	@Operation(summary = "Change translation status - Enabled/Disabled (true/false)", description = "TBC",
 			parameters = 
 			@Parameter(

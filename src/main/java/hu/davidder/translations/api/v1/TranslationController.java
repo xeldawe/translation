@@ -180,7 +180,7 @@ public class TranslationController {
 	}
 	
 	//TODO Config
-	@PostMapping("forward/disable/{originalId}")
+	@PostMapping("forward/disable/{id}")
 	@Operation(summary = "Disable translation forwarding", description = "TBC",
 			parameters = 
 			@Parameter(
@@ -192,8 +192,8 @@ public class TranslationController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
-	public ResponseEntity<Translation> disableForward(@PathVariable long originalId) {
-		Translation translation = translationService.findById(originalId);
+	public ResponseEntity<Translation> disableForward(@PathVariable long id) {
+		Translation translation = translationService.findById(id);
 		translation.setForwarded(null);
 		translation.setModifyDate(ZonedDateTime.now());
 		translationService.getRepository().save(translation);

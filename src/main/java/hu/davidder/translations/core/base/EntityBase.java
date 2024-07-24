@@ -24,7 +24,7 @@ public class EntityBase {
 	 * Enabled/Disabled
 	 */
 	@JsonIgnore
-	protected boolean status = false;
+	protected boolean status = true;
 
 	@Column(name="CREATE_DATE", nullable = false)
 	@JsonIgnore

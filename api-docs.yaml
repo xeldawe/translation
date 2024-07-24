@@ -1,0 +1,417 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Translation
+  description: Endpoints for querying translations
+- name: Image
+  description: Endpoints for querying images
+paths:
+  /api/v1/create/{translationId}:
+    put:
+      tags:
+      - Image
+      summary: Adding or replacing image on specific IMAGE type translation
+      description: TBC
+      operationId: saveImage
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      - name: translationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageInsertBody"
+        required: true
+      responses:
+        "404":
+          description: Transaction not found or this is not IMAGE type
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/v1/undelete/{id}:
+    post:
+      tags:
+      - Translation
+      summary: Undelete translation
+      description: TBC
+      operationId: undelete
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+  /api/v1/status/{id}/{status}:
+    post:
+      tags:
+      - Translation
+      summary: Change translation status - Enabled/Disabled (true/false)
+      description: TBC
+      operationId: changeStatus
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: status
+        in: path
+        required: true
+        schema:
+          type: boolean
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+  /api/v1/forward/{originalId}/{newId}:
+    post:
+      tags:
+      - Translation
+      summary: Forward translation
+      description: TBC
+      operationId: forward
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      - name: originalId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: newId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+  /api/v1/forward/disable/{id}:
+    post:
+      tags:
+      - Translation
+      summary: Disable translation forwarding
+      description: TBC
+      operationId: disableForward
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+  /api/v1/create-text:
+    post:
+      tags:
+      - Translation
+      summary: Create translation - Text type
+      description: TBC
+      operationId: create
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TranslationTextInsertBody"
+        required: true
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+  /api/v1/create-image:
+    post:
+      tags:
+      - Translation
+      summary: Create translation - Image type
+      description: TBC
+      operationId: create_1
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TranslationImageInsertBody"
+        required: true
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+  /api/v1/{market}/translations:
+    get:
+      tags:
+      - Translation
+      operationId: getAlLTranslationsForAngular
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/v1/translations:
+    get:
+      tags:
+      - Translation
+      summary: Get all translations
+      description: This will query every translations
+      operationId: getAllTranslations
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/v1/translation/{key}:
+    get:
+      tags:
+      - Translation
+      summary: Get translation by key
+      description: This will query translation with a specific key
+      operationId: getTranslations
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Translation"
+      deprecated: true
+  /api/v1/stream/change:
+    get:
+      tags:
+      - Translation
+      summary: Stream
+      description: Transaction change stream
+      operationId: change
+      responses:
+        "200":
+          description: Streaming
+          content:
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/SseEmitter"
+        "500":
+          description: Oh nooo.. :(
+  /api/v1/images/{name}:
+    get:
+      tags:
+      - Image
+      summary: Return image from database
+      description: TBC
+      operationId: getImage
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: targetSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            image/png:
+              schema:
+                type: string
+            image/jpeg:
+              schema:
+                type: string
+  /api/v1/delete/{id}:
+    delete:
+      tags:
+      - Translation
+      summary: Delete translation - (not physical)
+      description: TBC
+      operationId: delete
+      parameters:
+      - name: X-Market
+        in: header
+        description: "Custom market. Example: en-th"
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+components:
+  schemas:
+    ImageInsertBody:
+      type: object
+      properties:
+        url:
+          type: string
+        targetSizes:
+          type: array
+          items:
+            type: integer
+            format: int32
+    Translation:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        type:
+          type: string
+          enum:
+          - TEXT
+          - IMAGE
+    TranslationTextInsertBody:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    TranslationImageInsertBody:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          $ref: "#/components/schemas/ImageInsertBody"
+    SseEmitter:
+      type: object
+      properties:
+        timeout:
+          type: integer
+          format: int64

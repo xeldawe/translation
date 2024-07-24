@@ -156,6 +156,7 @@ public class TranslationController {
 		return ResponseEntity.ok(newTranslation);
 	}
 	
+	//TODO Config
 	@PostMapping("forward/{originalId}/{newId}")
 	@Operation(summary = "Forward translation", description = "TBC",
 			parameters = 

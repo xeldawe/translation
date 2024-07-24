@@ -257,7 +257,6 @@ public class TranslationController {
 	public ResponseEntity<Translation> changeStatus(@PathVariable long id, @PathVariable boolean status) {
 		Translation translation = translationService.findById(id);
 		translation.setStatus(status);
-		translation.setModifyDate(ZonedDateTime.now());
 		translationService.getRepository().save(translation);
 		return ResponseEntity.ok(translation);
 	}

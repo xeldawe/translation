@@ -201,8 +201,13 @@ public class TranslationController {
 	}
 	
 	//TODO Config
+	/**
+	 * This is not a physical delete
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("delete/{id}")
-	@Operation(summary = "Delete translation", description = "TBC",
+	@Operation(summary = "Delete translation - (not physical)", description = "TBC",
 			parameters = 
 			@Parameter(
 				in = ParameterIn.HEADER,

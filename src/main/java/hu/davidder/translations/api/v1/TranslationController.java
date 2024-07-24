@@ -189,7 +189,7 @@ public class TranslationController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
-	public ResponseEntity<Translation> forward(@PathVariable long originalId) {
+	public ResponseEntity<Translation> disableForward(@PathVariable long originalId) {
 		Translation translation = translationService.findById(originalId);
 		translation.setForwarded(null);
 		translationService.getRepository().save(translation);

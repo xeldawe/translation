@@ -37,5 +37,16 @@ public class AsyncConfig {
 	    return executor;
 	  }
 	  
+	  @Bean("JOBS")
+	  public Executor jobsExecutor() {
+	    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+	    executor.setCorePoolSize(10);
+	    executor.setMaxPoolSize(20);
+	    executor.setQueueCapacity(40);
+	    executor.setThreadNamePrefix("JOBS Thread -");
+	    executor.initialize();
+	    return executor;
+	  }
+	  
 	  
 }

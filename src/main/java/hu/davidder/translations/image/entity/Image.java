@@ -41,7 +41,6 @@ public class Image extends EntityBase implements Serializable {
 
 	public Image() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Image(Translation translation, String name, byte[] value, Integer targetSize, ImageType type) {

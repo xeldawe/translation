@@ -46,7 +46,6 @@ public class Translation extends EntityBase implements Serializable{
 
 	public Translation() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Column(name="KEY",length = 2000, nullable = false)

@@ -1,12 +1,16 @@
 package hu.davidder.translations.translation.repository;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import hu.davidder.translations.core.util.CriteriaHelperService;
 import hu.davidder.translations.translation.entity.Translation;
 import hu.davidder.translations.translation.entity.Type;
 import jakarta.persistence.EntityManager;
@@ -23,15 +27,20 @@ public class CustomTranslationRepositoryImpl implements CustomTranslationReposit
     @Autowired
     private EntityManager entityManager;
 	
+	@Lazy
+    @Autowired
+    private CriteriaHelperService criteriaHelperService;
+	
 	@Override
 	@Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true, propagation = Propagation.REQUIRED)
 	public Translation findByKey(String key) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Translation> cq = cb.createQuery(Translation.class);
-        Root<Translation> translation = cq.from(Translation.class);
-        Predicate keyPredicate = cb.equal(translation.get("key"), key);
-        Predicate isNotDeleted = cb.equal(translation.get("deleted"), false);
-        cq.where(keyPredicate,isNotDeleted);
+        Root<Translation> root = cq.from(Translation.class);
+        Set<Predicate> predicates = new HashSet<>();
+        predicates.add(cb.equal(root.get("key"), key));
+        predicates = criteriaHelperService.addAllBasePredicates(cb, root, predicates);
+        cq.where(criteriaHelperService.getAsArray(predicates));
         TypedQuery<Translation> query = entityManager.createQuery(cq);
         return query.getSingleResult();
 	}
@@ -41,11 +50,12 @@ public class CustomTranslationRepositoryImpl implements CustomTranslationReposit
 	public Translation findByIdAndType(long id, Type type) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Translation> cq = cb.createQuery(Translation.class);
-        Root<Translation> translation = cq.from(Translation.class);
-        Predicate keyPredicate = cb.equal(translation.get("id"), id);
-        Predicate typePredicate = cb.equal(translation.get("type"), type);
-        Predicate isNotDeleted = cb.equal(translation.get("deleted"), false);
-        cq.where(keyPredicate,typePredicate,isNotDeleted);
+        Root<Translation> root = cq.from(Translation.class);
+        Set<Predicate> predicates = new HashSet<>();
+        predicates.add(cb.equal(root.get("id"), id));
+        predicates.add(cb.equal(root.get("type"), type));
+        predicates = criteriaHelperService.addAllBasePredicates(cb, root, predicates);
+        cq.where(criteriaHelperService.getAsArray(predicates));
         TypedQuery<Translation> query = entityManager.createQuery(cq);
         return query.getSingleResult();
 	}

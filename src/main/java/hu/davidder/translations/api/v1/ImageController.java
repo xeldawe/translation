@@ -1,5 +1,6 @@
 package hu.davidder.translations.api.v1;
 
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -97,6 +98,7 @@ public class ImageController {
 			@RequestBody ImageInsertBody imageInsertBody) {
 		try {
 			Translation translation = translationService.findByIdAndType(translationId, Type.IMAGE);
+			translation.setModifyDate(ZonedDateTime.now());
 			List<String> imageUrls = new LinkedList<>();
 			try {
 				Iterable<Image> res = imageService.createImages(imageInsertBody.getUrl(),imageInsertBody.getTargetSizes(),translation);

@@ -35,7 +35,10 @@ public class EntityBase {
 	@Column(name="DELETE_DATE", nullable = true)
 	@JsonIgnore
 	protected ZonedDateTime deleteDate;
-
+	@Column(name="STATUS_MODIFY_DATE", nullable = true)
+	@JsonIgnore
+	protected ZonedDateTime statusModifyDate;
+	
 	public Long getId() {
 		return id;
 	}
@@ -49,6 +52,11 @@ public class EntityBase {
 	}
 
 	public void setDeleted(boolean deleted) {
+		if(deleted) {
+			deleteDate = ZonedDateTime.now();
+		}else {
+			deleteDate = null;
+		}
 		this.deleted = deleted;
 	}
 
@@ -57,6 +65,11 @@ public class EntityBase {
 	}
 
 	public void setStatus(boolean status) {
+		if(status) {
+			statusModifyDate = ZonedDateTime.now();
+		}else {
+			statusModifyDate = null;
+		}
 		this.status = status;
 	}
 

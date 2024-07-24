@@ -175,6 +175,26 @@ public class TranslationController {
 		translationService.getRepository().save(translation);
 		return ResponseEntity.ok(translation);
 	}
+	
+	//TODO Config
+	@PostMapping("forward/disable/{originalId}")
+	@Operation(summary = "Disable translation forwarding", description = "TBC",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.HEADER,
+				name = "X-Market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
+	public ResponseEntity<Translation> forward(@PathVariable long originalId) {
+		Translation translation = translationService.findById(originalId);
+		translation.setForwarded(null);
+		translationService.getRepository().save(translation);
+		return ResponseEntity.ok(translation);
+	}
 
 	//TODO HANDLE ERRORS
 	@PostMapping("${create.image}")

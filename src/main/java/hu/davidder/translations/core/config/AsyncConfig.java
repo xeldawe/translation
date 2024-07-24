@@ -18,9 +18,9 @@ public class AsyncConfig {
 	  @Primary
 	  public Executor asyncExecutor() {
 	    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-	    executor.setCorePoolSize(20);
+	    executor.setCorePoolSize(10);
 	    executor.setMaxPoolSize(20);
-	    executor.setQueueCapacity(500);
+	    executor.setQueueCapacity(100);
 	    executor.setThreadNamePrefix("Async Thread -");
 	    executor.initialize();
 	    return executor;
@@ -29,9 +29,9 @@ public class AsyncConfig {
 	  @Bean("SSE")
 	  public Executor sseExecutor() {
 	    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-	    executor.setCorePoolSize(20);
+	    executor.setCorePoolSize(10);
 	    executor.setMaxPoolSize(20);
-	    executor.setQueueCapacity(500);
+	    executor.setQueueCapacity(20);
 	    executor.setThreadNamePrefix("SSE Thread -");
 	    executor.initialize();
 	    return executor;
@@ -40,7 +40,7 @@ public class AsyncConfig {
 	  @Bean("JOBS")
 	  public Executor jobsExecutor() {
 	    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-	    executor.setCorePoolSize(10);
+	    executor.setCorePoolSize(1);
 	    executor.setMaxPoolSize(20);
 	    executor.setQueueCapacity(40);
 	    executor.setThreadNamePrefix("JOBS Thread -");

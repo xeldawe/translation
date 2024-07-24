@@ -1,5 +1,6 @@
 package hu.davidder.translations.api.v1;
 
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -172,6 +174,7 @@ public class TranslationController {
 	public ResponseEntity<Translation> forward(@PathVariable long originalId, @PathVariable long newId) {
 		Translation translation = translationService.findById(originalId);
 		translation.setForwarded(translationService.findById(newId));
+		translation.setModifyDate(ZonedDateTime.now());
 		translationService.getRepository().save(translation);
 		return ResponseEntity.ok(translation);
 	}
@@ -192,9 +195,74 @@ public class TranslationController {
 	public ResponseEntity<Translation> disableForward(@PathVariable long originalId) {
 		Translation translation = translationService.findById(originalId);
 		translation.setForwarded(null);
+		translation.setModifyDate(ZonedDateTime.now());
 		translationService.getRepository().save(translation);
 		return ResponseEntity.ok(translation);
 	}
+	
+	//TODO Config
+	@DeleteMapping("delete/{id}")
+	@Operation(summary = "Delete translation", description = "TBC",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.HEADER,
+				name = "X-Market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
+	public ResponseEntity<Translation> delete(@PathVariable long id) {
+		Translation translation = translationService.findById(id);
+		translation.setDeleted(true);
+		translationService.getRepository().save(translation);
+		return ResponseEntity.ok(translation);
+	}
+	
+	//TODO Config
+	@PostMapping("undelete/{id}")
+	@Operation(summary = "Undelete translation", description = "TBC",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.HEADER,
+				name = "X-Market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
+	public ResponseEntity<Translation> undelete(@PathVariable long id) {
+		Translation translation = translationService.findById(id);
+		translation.setDeleted(false);
+		translationService.getRepository().save(translation);
+		return ResponseEntity.ok(translation);
+	}
+
+	
+	//TODO Config
+	@PostMapping("status/{id}/{status}")
+	@Operation(summary = "Change translation status - Enabled/Disabled (true/false)", description = "TBC",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.HEADER,
+				name = "X-Market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
+	public ResponseEntity<Translation> changeStatus(@PathVariable long id, @PathVariable boolean status) {
+		Translation translation = translationService.findById(id);
+		translation.setStatus(status);
+		translation.setModifyDate(ZonedDateTime.now());
+		translationService.getRepository().save(translation);
+		return ResponseEntity.ok(translation);
+	}
+
+
 
 	//TODO HANDLE ERRORS
 	@PostMapping("${create.image}")

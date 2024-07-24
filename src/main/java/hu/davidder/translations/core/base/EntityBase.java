@@ -57,6 +57,7 @@ public class EntityBase {
 		}else {
 			deleteDate = null;
 		}
+		modifyDate = ZonedDateTime.now();
 		this.deleted = deleted;
 	}
 
@@ -70,6 +71,7 @@ public class EntityBase {
 		}else {
 			statusModifyDate = null;
 		}
+		modifyDate = ZonedDateTime.now();
 		this.status = status;
 	}
 

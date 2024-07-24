@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -98,6 +99,15 @@ public class TranslationService {
 	//@Cacheable(value = "translation", key = "{#key}",unless="#result == null")
 	public Translation findByKey(String key) {
 		return replaceLink(repository.findByKey(key));
+	}
+	
+	@Cacheable(value = "translation", key = "{#key}",unless="#result == null")
+	public Translation findById(long id) {
+		Optional<Translation> t = repository.findById(id);
+		if(t.isPresent()) {
+			return replaceLink(t.get());
+		}
+		return null;
 	}
 
 	public Translation findByIdAndType(long id, Type type) {

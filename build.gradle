@@ -49,7 +49,7 @@ implementation 'com.bucket4j:bucket4j_jdk17-redisson:8.14.0'
 implementation 'org.redisson:redisson-spring-boot-starter:3.38.1'
 // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
 implementation 'org.springframework.boot:spring-boot-starter-security:3.3.5'
-https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api/0.12.6
+//https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api/0.12.6
 implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
 // https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
 implementation 'org.springframework.security:spring-security-crypto:6.3.4'

@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.1'
-	id 'io.spring.dependency-management' version '1.1.5'
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group = 'hu.davidder.'
@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(23)
 	}
 }
 
@@ -38,21 +38,21 @@ implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 // https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib
 implementation 'org.imgscalr:imgscalr-lib:4.2'
 // https://mvnrepository.com/artifact/commons-io/commons-io
-implementation 'commons-io:commons-io:2.16.1'
+implementation 'commons-io:commons-io:2.17.0'
 // https://mvnrepository.com/artifact/com.bucket4j/bucket4j-core
 //implementation 'com.bucket4j:bucket4j-core:8.10.1'
 // https://mvnrepository.com/artifact/com.bucket4j/bucket4j_jdk17-redis-common
-implementation 'com.bucket4j:bucket4j_jdk17-redis-common:8.13.1'
+implementation 'com.bucket4j:bucket4j_jdk17-redis-common:8.14.0'
 // https://mvnrepository.com/artifact/com.bucket4j/bucket4j_jdk17-redisson
-implementation 'com.bucket4j:bucket4j_jdk17-redisson:8.13.1'
+implementation 'com.bucket4j:bucket4j_jdk17-redisson:8.14.0'
 // https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter
-implementation 'org.redisson:redisson-spring-boot-starter:3.32.0'
+implementation 'org.redisson:redisson-spring-boot-starter:3.38.1'
 // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
-implementation 'org.springframework.boot:spring-boot-starter-security:3.3.1'
-// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
-implementation 'io.jsonwebtoken:jjwt:0.12.6'
+implementation 'org.springframework.boot:spring-boot-starter-security:3.3.5'
+https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api/0.12.6
+implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
 // https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
-implementation 'org.springframework.security:spring-security-crypto:6.3.1'
+implementation 'org.springframework.security:spring-security-crypto:6.3.4'
 
 
 

@@ -38,7 +38,7 @@ public class HibernateConfig {
 		Properties hibernateProp = new Properties();
 		hibernateProp.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER, multiTenantConnectionProviderImpl);
 		hibernateProp.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER, currentTenantIdentifierResolverImpl);
-//		 hibernateProp.put("hibernate.default_schema", "en-th");
+//		hibernateProp.put("hibernate.default_schema", "en-th");
 		hibernateProp.put("hibernate.hbm2ddl.auto", hbm2ddl);
 		hibernateProp.put("hibernate.enable_lazy_load_no_trans", "true");
 		hibernateProp.put("hibernate.jdbc.batch_size", batchSize);

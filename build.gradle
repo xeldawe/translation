@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.5'
+	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.6'
 }
 
@@ -34,7 +34,7 @@ repositories {
 
 dependencies {
 // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
-implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 // https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib
 implementation 'org.imgscalr:imgscalr-lib:4.2'
 // https://mvnrepository.com/artifact/commons-io/commons-io

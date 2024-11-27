@@ -82,6 +82,13 @@ public class TranslationController {
 		}
 	}
 	
+	@Operation(summary = "Get all translations", description = "This will query every translations")
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Everything is fine",
+					content = @Content(schema = @Schema(implementation = Iterable.class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(",
+			content = @Content(schema = @Schema(implementation = Void.class))),
+	})
 	@GetMapping(value = "/{market}/translations", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,String>> getAlLTranslationsForAngular(){
 		Iterable<Translation> data = translationService.findAll();

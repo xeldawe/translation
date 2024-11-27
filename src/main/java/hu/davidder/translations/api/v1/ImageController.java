@@ -80,8 +80,12 @@ public class ImageController {
 				.body(response);
 	}
 	
+	@Operation(summary = "Return image from database", description = "TBC")
 	@GetMapping(value = "/{market}/${find.image.by.name.endpoint}", produces = { MediaType.IMAGE_PNG_VALUE,
 			MediaType.IMAGE_JPEG_VALUE })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<byte[]> getImageV2(@PathVariable("name") String name,
 			@RequestParam(name="targetSize", defaultValue = "0") int targetSize) {
 		Image img = imageService.getCdnImage(name, targetSize);

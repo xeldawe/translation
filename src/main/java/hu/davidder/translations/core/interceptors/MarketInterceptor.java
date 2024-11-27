@@ -37,8 +37,9 @@ public class MarketInterceptor implements HandlerInterceptor {
 			if(pathInfo.contains(image)) {
 				pathInfo = pathInfo.substring(0,pathInfo.indexOf(image));
 			}
-			privateTenant = pathInfo;
-			System.err.println("pathInfo: "+pathInfo);
+			if(pathInfo.length() == 5) {
+				privateTenant = pathInfo;
+			}
 		}
 		if (privateTenant != null) {
 			setCurrentTenant(privateTenant);

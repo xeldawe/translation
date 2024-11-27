@@ -27,6 +27,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import hu.davidder.translations.core.interceptors.MarketInterceptor;
 import hu.davidder.translations.image.entity.Image;
 import hu.davidder.translations.image.entity.ImageType;
 import hu.davidder.translations.image.service.ImageService;
@@ -47,8 +48,11 @@ public class TranslationService {
 	@Autowired
 	private ImageService imageService;
 
-	@Value("${image.base.url}")
+	@Value("${image.base.url.prefix}")
 	private String imageUrlPrefix;
+	
+	@Value("${image.base.url.postfix}")
+	private String imageUrlPostfix;
 
 	@Deprecated
 	public void loadFromFile(String path) throws JsonMappingException, JsonProcessingException, IOException {
@@ -138,7 +142,7 @@ public class TranslationService {
 	
 	public Translation replaceLink(Translation d) {
 		if (d.getType().equals(Type.IMAGE)) {
-			d.setValue(imageUrlPrefix + d.getValue());
+			d.setValue(imageUrlPrefix+MarketInterceptor.currentTenant.get()+"/"+imageUrlPostfix+ d.getValue());
 		}
 		return d;
 	}

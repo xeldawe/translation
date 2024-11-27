@@ -4,6 +4,10 @@ import hu.davidder.translations.image.entity.ImageInsertBody;
 
 public class TranslationImageInsertBody {
 	
+	public TranslationImageInsertBody() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public TranslationImageInsertBody(String key, ImageInsertBody value) {
 		super();
 		this.key = key;
@@ -22,6 +26,10 @@ public class TranslationImageInsertBody {
 	}
 	public void setValue(ImageInsertBody value) {
 		this.value = value;
+	}
+	@Override
+	public String toString() {
+		return "TranslationImageInsertBody [key=" + key + ", value=" + value + "]";
 	}
 	
 	

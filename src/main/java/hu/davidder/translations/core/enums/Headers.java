@@ -30,8 +30,12 @@ public enum Headers {
 	
 	public static List<String> asList() {
 		return Stream.of(Headers.values())
-                .map(Enum::name)
+                .map(Enum::toString)
                 .collect(Collectors.toList());
 	}
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

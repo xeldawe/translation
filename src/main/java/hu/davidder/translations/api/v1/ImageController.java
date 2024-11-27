@@ -11,7 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.RequestScope;
 
+import hu.davidder.translations.core.interceptors.MarketInterceptor;
 import hu.davidder.translations.image.entity.Image;
 import hu.davidder.translations.image.entity.ImageInsertBody;
 import hu.davidder.translations.image.entity.ImageType;
@@ -41,7 +41,6 @@ import jakarta.persistence.NoResultException;
 @RestController
 @PropertySource("classpath:image-endpoint.properties")
 @RequestMapping("${base.endpoint}")
-@CrossOrigin()
 @Tag(name = "Image", description = "Endpoints for querying images")
 @RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ImageController {
@@ -54,8 +53,10 @@ public class ImageController {
 	@Autowired
 	private TranslationService translationService;
 
-	@Value("${image.base.url}")
+	@Value("${image.base.url.prefix}")
 	private String imageUrlPrefix;
+	@Value("${image.base.url.postfix}")
+	private String imageUrlPostfix;
 
 	@GetMapping(value = "${find.image.by.name.endpoint}", produces = { MediaType.IMAGE_PNG_VALUE,
 			MediaType.IMAGE_JPEG_VALUE })
@@ -71,7 +72,18 @@ public class ImageController {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Byte[].class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<byte[]> getImage(@PathVariable("name") String name,
-			@RequestParam(defaultValue = "0") Integer targetSize) {
+			@RequestParam(name="targetSize", defaultValue = "0") int targetSize) {
+		Image img = imageService.getCdnImage(name, targetSize);
+		byte[] response = img.getValue();
+		return ResponseEntity.ok()
+				.contentType(img.getType().equals(ImageType.PNG) ? MediaType.IMAGE_PNG : MediaType.IMAGE_JPEG)
+				.body(response);
+	}
+	
+	@GetMapping(value = "/{market}/${find.image.by.name.endpoint}", produces = { MediaType.IMAGE_PNG_VALUE,
+			MediaType.IMAGE_JPEG_VALUE })
+	public ResponseEntity<byte[]> getImageV2(@PathVariable("name") String name,
+			@RequestParam(name="targetSize", defaultValue = "0") int targetSize) {
 		Image img = imageService.getCdnImage(name, targetSize);
 		byte[] response = img.getValue();
 		return ResponseEntity.ok()
@@ -104,7 +116,7 @@ public class ImageController {
 				Iterable<Image> res = imageService.createImages(imageInsertBody.getUrl(),imageInsertBody.getTargetSizes(),translation);
 				imageService.getImageRepository().saveAll(res);
 				for (Image img : res) {
-					imageUrls.add(imageUrlPrefix + img.getName()+"?targetSize="+img.getTargetSize());
+					imageUrls.add(imageUrlPrefix+MarketInterceptor.currentTenant.get()+"/"+imageUrlPostfix+ img.getName()+"?targetSize="+img.getTargetSize());
 				}
 			} catch (Exception e) {
 				ResponseEntity.internalServerError().build();

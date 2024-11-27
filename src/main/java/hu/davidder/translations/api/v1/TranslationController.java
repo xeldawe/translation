@@ -11,7 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,7 +41,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @PropertySource("classpath:translation-endpoint.properties")
 @RequestMapping("${base.endpoint}")
-@CrossOrigin()
 @Tag(name = "Translation", description = "Endpoints for querying translations")
 @RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class TranslationController {
@@ -285,6 +283,7 @@ public class TranslationController {
 	public ResponseEntity<Translation> create(@RequestBody TranslationImageInsertBody translationInsertBody) {
 		Translation newTranslation = new Translation();
 		newTranslation.setType(Type.IMAGE);
+		newTranslation.setKey(translationInsertBody.getKey());
 		List<Image> images = imageService.createImages(translationInsertBody.getValue(), newTranslation);
 		newTranslation.setImages(images);
 		newTranslation.setValue(images.get(0).getName());

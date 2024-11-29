@@ -1,33 +1,30 @@
 package hu.davidder.translations.core.interceptors;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Optional;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import hu.davidder.translations.core.config.HibernateConfig;
 import hu.davidder.translations.core.enums.Headers;
 
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(MarketInterceptor.class)
 public class MarketInterceptorTest {
 
+    @Autowired
     private MarketInterceptor marketInterceptor;
 
     @Mock
     private HibernateConfig hibernateConfig;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        marketInterceptor = new MarketInterceptor();
-        marketInterceptor.setMarketRegex("(\\/[a-zA-Z]{2}-[a-zA-Z]{2}\\/)");
-    }
 
     @Test
     public void testPreHandle_WithHeader() throws Exception {

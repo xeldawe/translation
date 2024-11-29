@@ -52,7 +52,7 @@ public class Image extends EntityBase implements Serializable {
     /**
      * The type of the image.
      */
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING) //TODO
     @Column(name = "TYPE", nullable = false)
     private ImageType type;
 

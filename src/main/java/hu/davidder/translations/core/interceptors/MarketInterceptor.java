@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @PropertySource("classpath:interceptor.properties")
 public class MarketInterceptor implements HandlerInterceptor {
 
-	@Value("${market.regex:}")
+	@Value("${market.regex}")
 	private String marketRegex;
 
 	
@@ -31,12 +31,12 @@ public class MarketInterceptor implements HandlerInterceptor {
 			throws Exception {
 		String privateTenant = request.getHeader(Headers.X_MARKET.getName());
 		String pathInfo = request.getRequestURI().substring(request.getContextPath().length());
-		var market =findMarketFromUrl(pathInfo);
+		var market = findMarketFromUrl(pathInfo);
 		if(market.isPresent()) {
 			privateTenant = market.get();
 		}
 		if (privateTenant != null) {
-			setCurrentTenant(privateTenant);
+			setCurrentTenant(privateTenant.toLowerCase());
 		}
 		return true;
 	}

@@ -116,12 +116,6 @@ paths:
         description: "Custom market. Example: en-th"
         schema:
           type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
       responses:
         "500":
           description: Oh nooo.. :(
@@ -144,17 +138,6 @@ paths:
         description: "Custom market. Example: en-th"
         schema:
           type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: status
-        in: path
-        required: true
-        schema:
-          type: boolean
       responses:
         "500":
           description: Oh nooo.. :(
@@ -177,18 +160,6 @@ paths:
         description: "Custom market. Example: en-th"
         schema:
           type: string
-      - name: originalId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: newId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
       responses:
         "500":
           description: Oh nooo.. :(
@@ -211,12 +182,6 @@ paths:
         description: "Custom market. Example: en-th"
         schema:
           type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
       responses:
         "500":
           description: Oh nooo.. :(
@@ -230,16 +195,92 @@ paths:
     get:
       tags:
       - Translation
+      summary: Get all translations
+      description: This will query every translations
       operationId: getAlLTranslationsForAngular
+      parameters:
+      - name: market
+        in: path
+        description: "Custom market. Example: en-th"
+        required: true
+        schema:
+          type: string
       responses:
         "200":
-          description: OK
+          description: Everything is fine
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties:
+                type: string
+        "500":
+          description: Oh nooo.. :(
+  /api/v1/{market}/images/{name}:
+    get:
+      tags:
+      - Image
+      summary: Return image from database
+      description: TBC
+      operationId: getImageV2
+      parameters:
+      - name: market
+        in: path
+        description: "Custom market. Example: en-th"
+        required: true
+        schema:
+          type: string
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: targetSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            image/png:
+              schema:
+                type: array
+                items:
                   type: string
+                  format: byte
+            image/jpeg:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: byte
+  /api/v1/{market}/translation/{key}:
+    get:
+      tags:
+      - Translation
+      summary: Get translation by key
+      description: This will query translation with a specific key
+      operationId: getTranslationsV2
+      parameters:
+      - name: market
+        in: path
+        description: "Custom market. Example: en-th"
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Oh nooo.. :(
+        "200":
+          description: Everything is fine
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Translation"
   /api/v1/translations:
     get:
       tags:
@@ -254,14 +295,15 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Oh nooo.. :(
         "200":
           description: Everything is fine
           content:
             application/json:
               schema:
                 type: string
+        "500":
+          description: Oh nooo.. :(
+      deprecated: true
   /api/v1/translation/{key}:
     get:
       tags:
@@ -269,17 +311,7 @@ paths:
       summary: Get translation by key
       description: This will query translation with a specific key
       operationId: getTranslations
-      parameters:
-      - name: X-Market
-        in: header
-        description: "Custom market. Example: en-th"
-        schema:
-          type: string
-      - name: key
-        in: path
-        required: true
-        schema:
-          type: string
+      parameters: []
       responses:
         "500":
           description: Oh nooo.. :(
@@ -339,10 +371,17 @@ paths:
           content:
             image/png:
               schema:
-                type: string
+                type: array
+                items:
+                  type: string
+                  format: byte
             image/jpeg:
               schema:
-                type: string
+                type: array
+                items:
+                  type: string
+                  format: byte
+      deprecated: true
   /api/v1/delete/{id}:
     delete:
       tags:
@@ -356,12 +395,6 @@ paths:
         description: "Custom market. Example: en-th"
         schema:
           type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
       responses:
         "500":
           description: Oh nooo.. :(

@@ -1,6 +1,9 @@
 package hu.davidder.translations.core.interceptors;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -16,12 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @PropertySource("classpath:interceptor.properties")
 public class MarketInterceptor implements HandlerInterceptor {
 
-	@Value("${prefix}")
-	private String prefix;
-	@Value("${image}")
-	private String image;
-	@Value("${translation}")
-	private String translation;
+	@Value("${market.regex:}")
+	private String marketRegex;
 
 	
 	private static final String DEFAULT_TENANT = HibernateConfig.PUBLIC;
@@ -32,14 +31,9 @@ public class MarketInterceptor implements HandlerInterceptor {
 			throws Exception {
 		String privateTenant = request.getHeader(Headers.X_MARKET.getName());
 		String pathInfo = request.getRequestURI().substring(request.getContextPath().length());
-		if(pathInfo.startsWith(prefix) && (pathInfo.contains(image) ||  pathInfo.endsWith(translation))) {
-			pathInfo = pathInfo.replace(translation, "").replace(prefix, "");
-			if(pathInfo.contains(image)) {
-				pathInfo = pathInfo.substring(0,pathInfo.indexOf(image));
-			}
-			if(pathInfo.length() == 5) {
-				privateTenant = pathInfo;
-			}
+		var market =findMarketFromUrl(pathInfo);
+		if(market.isPresent()) {
+			privateTenant = market.get();
 		}
 		if (privateTenant != null) {
 			setCurrentTenant(privateTenant);
@@ -47,6 +41,14 @@ public class MarketInterceptor implements HandlerInterceptor {
 		return true;
 	}
 
+	private Optional<String> findMarketFromUrl(String path) {
+	    Pattern pattern = Pattern.compile(marketRegex, Pattern.CASE_INSENSITIVE);
+	    Matcher matcher = pattern.matcher(path);
+	    return matcher.find()?
+	    		 Optional.of(matcher.group(0).replaceAll("/", ""))
+	    				: Optional.empty();
+	}
+	
 	public String getCurrentTenant() {
 		String tenant = currentTenant.get();
 		return Objects.requireNonNullElse(tenant, DEFAULT_TENANT);

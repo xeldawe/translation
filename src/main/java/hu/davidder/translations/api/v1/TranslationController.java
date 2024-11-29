@@ -54,6 +54,7 @@ public class TranslationController {
 	private ImageService imageService;
 	
     
+	@Deprecated
 	@GetMapping(value = "${find.all.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Get all translations", description = "This will query every translations",
 			parameters = 
@@ -82,7 +83,14 @@ public class TranslationController {
 		}
 	}
 	
-	@Operation(summary = "Get all translations", description = "This will query every translations")
+	@Operation(summary = "Get all translations", description = "This will query every translations",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.PATH,
+				name = "market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Everything is fine",
 					content = @Content(schema = @Schema(implementation = Iterable.class))),
@@ -107,12 +115,33 @@ public class TranslationController {
 		}
 	}
 	
+	@GetMapping(value = "/{market}/${find.by.key.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE) 
+	@Operation(summary = "Get translation by key", description = "This will query translation with a specific key",
+			parameters = 
+			@Parameter(
+				in = ParameterIn.PATH,
+				name = "market",
+				description = "Custom market. Example: en-th",
+				required = false,
+				schema = @Schema(type = "string")))
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Everything is fine",
+					content = @Content(schema = @Schema(implementation = Translation.class))),
+			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(",
+			content = @Content(schema = @Schema(implementation = Void.class))),
+	})
+	public ResponseEntity<Translation> getTranslationsV2(@PathVariable String key) {
+		return  ResponseEntity
+				.ok()
+				.body(translationService.findByKey(key));
+	}
+	
 	@Deprecated
 	@GetMapping(value = "${find.by.key.endpoint}", produces = MediaType.APPLICATION_JSON_VALUE) 
 	@Operation(summary = "Get translation by key", description = "This will query translation with a specific key",
 			parameters = 
 			@Parameter(
-				in = ParameterIn.HEADER,
+				in = ParameterIn.PATH,
 				name = "X-Market",
 				description = "Custom market. Example: en-th",
 				required = false,

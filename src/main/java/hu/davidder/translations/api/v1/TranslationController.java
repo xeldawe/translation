@@ -99,11 +99,7 @@ public class TranslationController {
 	})
 	@GetMapping(value = "/{market}/translations", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,String>> getAlLTranslationsForAngular(){
-		Iterable<Translation> data = translationService.findAll();
-		Map<String, String> res = new HashMap<>();
-		for(Translation curr:data) {
-			res.put(curr.getKey(), curr.getValue());
-		}
+		Map<String, String> res  = translationService.convertToAngular(translationService.findAll());
 		try {
 	        return ResponseEntity
 			.ok()
@@ -160,6 +156,7 @@ public class TranslationController {
 
 	
 	//TODO fix this dummy 
+	@Deprecated
 	@GetMapping(value = "/stream/change", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@Operation(summary = "Stream", description = "Transaction change stream")
 	@ApiResponses(value = { 
@@ -188,9 +185,8 @@ public class TranslationController {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> create(@RequestBody TranslationTextInsertBody translationInsertBody) {
-		Translation newTranslation = new Translation(translationInsertBody.getKey(), translationInsertBody.getValue(), Type.TEXT);
-		translationService.getRepository().save(newTranslation);
-		return ResponseEntity.ok(newTranslation);
+		Translation translation = translationService.create(translationInsertBody);
+		return ResponseEntity.ok(translation);
 	}
 	
 	//TODO Config
@@ -207,10 +203,7 @@ public class TranslationController {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> forward(@PathVariable long originalId, @PathVariable long newId) {
-		Translation translation = translationService.findById(originalId);
-		translation.setForwarded(translationService.findById(newId));
-		translation.setModifyDate(ZonedDateTime.now());
-		translationService.getRepository().save(translation);
+		Translation translation = translationService.forward(originalId,newId);
 		return ResponseEntity.ok(translation);
 	}
 	
@@ -228,10 +221,7 @@ public class TranslationController {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> disableForward(@PathVariable long id) {
-		Translation translation = translationService.findById(id);
-		translation.setForwarded(null);
-		translation.setModifyDate(ZonedDateTime.now());
-		translationService.getRepository().save(translation);
+		Translation translation = translationService.disableForward(id);
 		return ResponseEntity.ok(translation);
 	}
 	
@@ -254,9 +244,7 @@ public class TranslationController {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> delete(@PathVariable long id) {
-		Translation translation = translationService.findById(id);
-		translation.setDeleted(true);
-		translationService.getRepository().save(translation);
+		Translation translation = translationService.delete(id);
 		return ResponseEntity.ok(translation);
 	}
 	
@@ -274,9 +262,7 @@ public class TranslationController {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> undelete(@PathVariable long id) {
-		Translation translation = translationService.findById(id);
-		translation.setDeleted(false);
-		translationService.getRepository().save(translation);
+		Translation translation = translationService.undelete(id);
 		return ResponseEntity.ok(translation);
 	}
 
@@ -295,9 +281,7 @@ public class TranslationController {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> changeStatus(@PathVariable long id, @PathVariable boolean status) {
-		Translation translation = translationService.findById(id);
-		translation.setStatus(status);
-		translationService.getRepository().save(translation);
+		Translation translation = translationService.changeStatus(id,status);
 		return ResponseEntity.ok(translation);
 	}
 
@@ -317,15 +301,8 @@ public class TranslationController {
 			@ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
 			@ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class))), })
 	public ResponseEntity<Translation> create(@RequestBody TranslationImageInsertBody translationInsertBody) {
-		Translation newTranslation = new Translation();
-		newTranslation.setType(Type.IMAGE);
-		newTranslation.setKey(translationInsertBody.getKey());
-		List<Image> images = imageService.createImages(translationInsertBody.getValue(), newTranslation);
-		newTranslation.setImages(images);
-		newTranslation.setValue(images.get(0).getName());
-		newTranslation.setKey(translationInsertBody.getKey());
-		translationService.getRepository().save(newTranslation);
-		return ResponseEntity.ok(translationService.replaceLink(newTranslation));
+		Translation translation = translationService.createImage(translationInsertBody);
+		return ResponseEntity.ok(translation);
 	}
 }
 

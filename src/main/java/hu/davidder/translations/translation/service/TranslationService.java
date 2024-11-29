@@ -3,6 +3,7 @@ package hu.davidder.translations.translation.service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,8 +20,10 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,6 +35,8 @@ import hu.davidder.translations.image.entity.Image;
 import hu.davidder.translations.image.entity.ImageType;
 import hu.davidder.translations.image.service.ImageService;
 import hu.davidder.translations.translation.entity.Translation;
+import hu.davidder.translations.translation.entity.TranslationImageInsertBody;
+import hu.davidder.translations.translation.entity.TranslationTextInsertBody;
 import hu.davidder.translations.translation.entity.Type;
 import hu.davidder.translations.translation.repository.TranslationRepository;
 
@@ -151,5 +156,66 @@ public class TranslationService {
 		return repository;
 	}
 	
+	public Translation create(TranslationTextInsertBody translationInsertBody) {
+		Translation translation = new Translation(translationInsertBody.getKey(), translationInsertBody.getValue(), Type.TEXT);
+		repository.save(translation);
+		return translation;
+	}
 	
+	public Translation forward(long originalId, long newId) {
+		Translation translation = findById(originalId);
+		translation.setForwarded(findById(newId));
+		translation.setModifyDate(ZonedDateTime.now());
+		repository.save(translation);
+		return translation;
+	}
+	
+	public Translation disableForward(long id) {
+		Translation translation = findById(id);
+		translation.setForwarded(null);
+		translation.setModifyDate(ZonedDateTime.now());
+		repository.save(translation);
+		return translation;
+	}
+	
+	public Translation delete(long id) {
+		Translation translation = findById(id);
+		translation.setDeleted(true);
+		repository.save(translation);
+		return translation;
+	}
+	
+	public Translation undelete(long id) {
+		Translation translation = findById(id);
+		translation.setDeleted(false);
+		repository.save(translation);
+		return translation;
+	}
+	
+	public Translation changeStatus(long id, boolean status) {
+		Translation translation = findById(id);
+		translation.setStatus(status);
+		repository.save(translation);
+		return translation;
+	}
+	
+	public Translation createImage(TranslationImageInsertBody translationInsertBody) {
+		Translation newTranslation = new Translation();
+		newTranslation.setType(Type.IMAGE);
+		newTranslation.setKey(translationInsertBody.getKey());
+		List<Image> images = imageService.createImages(translationInsertBody.getValue(), newTranslation);
+		newTranslation.setImages(images);
+		newTranslation.setValue(images.get(0).getName());
+		newTranslation.setKey(translationInsertBody.getKey());
+		repository.save(newTranslation);
+		return replaceLink(newTranslation);
+	}
+	
+	public Map<String, String> convertToAngular(Iterable<Translation> data){
+		Map<String, String> res = new HashMap<>();
+		for(Translation curr:data) {
+			res.put(curr.getKey(), curr.getValue());
+		}
+		return res;
+	}
 }

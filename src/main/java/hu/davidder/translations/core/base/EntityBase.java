@@ -18,7 +18,7 @@ public class EntityBase {
 
     @Id
     @GeneratedValue
-    @JsonIgnore
+//    @JsonIgnore
     protected Long id;
 
     @JsonIgnore

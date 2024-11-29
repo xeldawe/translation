@@ -106,7 +106,7 @@ public class TranslationController {
             @ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
             @ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class)))
     })
-    public ResponseEntity<Translation> getTranslation(@PathVariable String key) {
+    public ResponseEntity<Translation> getTranslation(@PathVariable(name="key") String key) {
         return ResponseEntity.ok(translationService.findByKey(key));
     }
 
@@ -124,7 +124,7 @@ public class TranslationController {
             @ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
             @ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class)))
     })
-    public ResponseEntity<Translation> getTranslations(@PathVariable String key) {
+    public ResponseEntity<Translation> getTranslations(@PathVariable(name="key") String key) {
         return getTranslation(key);
     }
 
@@ -177,7 +177,7 @@ public class TranslationController {
             @ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
             @ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class)))
     })
-    public ResponseEntity<Translation> forward(@PathVariable long originalId, @PathVariable long newId) {
+    public ResponseEntity<Translation> forward(@PathVariable(name="originalId") long originalId, @PathVariable(name="newId") long newId) {
         return ResponseEntity.ok(translationService.forward(originalId, newId));
     }
 
@@ -194,7 +194,7 @@ public class TranslationController {
             @ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
             @ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class)))
     })
-    public ResponseEntity<Translation> disableForward(@PathVariable long id) {
+    public ResponseEntity<Translation> disableForward(@PathVariable(name="id") long id) {
         return ResponseEntity.ok(translationService.disableForward(id));
     }
 
@@ -211,7 +211,7 @@ public class TranslationController {
             @ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
             @ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class)))
     })
-    public ResponseEntity<Translation> delete(@PathVariable long id) {
+    public ResponseEntity<Translation> delete(@PathVariable(name="id") long id) {
         Translation translation = translationService.delete(id);
         return ResponseEntity.ok(translation);
     }
@@ -229,7 +229,7 @@ public class TranslationController {
             @ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
             @ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class)))
     })
-    public ResponseEntity<Translation> undelete(@PathVariable long id) {
+    public ResponseEntity<Translation> undelete(@PathVariable(name="id") long id) {
         Translation translation = translationService.undelete(id);
         return ResponseEntity.ok(translation);
     }
@@ -248,7 +248,7 @@ public class TranslationController {
             @ApiResponse(responseCode = "200", description = "Everything is fine", content = @Content(schema = @Schema(implementation = Translation.class))),
             @ApiResponse(responseCode = "500", description = "Oh nooo.. :(", content = @Content(schema = @Schema(implementation = Void.class)))
     })
-    public ResponseEntity<Translation> changeStatus(@PathVariable long id, @PathVariable boolean status) {
+    public ResponseEntity<Translation> changeStatus(@PathVariable(name="id") long id, @PathVariable(name="status") boolean status) {
         Translation translation = translationService.changeStatus(id, status);
         return ResponseEntity.ok(translation);
     }

@@ -83,9 +83,5 @@ public class MarketInterceptor implements HandlerInterceptor {
     public void clear() {
         currentTenant.remove();
     }
-
-    //for test
-	public void setMarketRegex(String string) {
-		this.marketRegex = string;
-	}
+    
 }

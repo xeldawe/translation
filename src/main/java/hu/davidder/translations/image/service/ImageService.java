@@ -84,7 +84,6 @@ public class ImageService {
 		return createImages(imageInsertBody.getUrl(), imageInsertBody.getTargetSizes(), translation);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Image> createImages(String url, List<Integer> sizes, Translation translation){
 		String name = UUID.randomUUID().toString();
 		ImageType type = ImageType.PNG;

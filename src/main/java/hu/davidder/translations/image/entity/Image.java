@@ -9,87 +9,164 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import hu.davidder.translations.core.base.EntityBase;
 import hu.davidder.translations.translation.entity.Translation;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+/**
+ * The Image class represents an image entity that includes details
+ * such as its name, value, target size, and type. It is linked to a
+ * Translation entity.
+ */
 @Entity
 @Table(name = "image")
 public class Image extends EntityBase implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 684811543619976895L;
+    private static final long serialVersionUID = 684811543619976895L;
 
-	@JsonBackReference
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-	@Fetch(FetchMode.JOIN)
-	@JoinColumn(name = "translation_id", nullable = true)
-	private Translation translation;
-	@Column(name="NAME", nullable = false)
-	private String name;
-	@Column(name="VALUE", nullable = false)
-	private byte[] value;
-	@Column(name="TARGET_SIZE", nullable = false)
-	private Integer targetSize;
-	@Column(name="TYPE", nullable = false)
-	private ImageType type;
+    /**
+     * The Translation associated with this image.
+     */
+    @JsonBackReference
+    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH })
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "translation_id", nullable = true)
+    private Translation translation;
 
-	public Image() {
-		super();
-	}
+    /**
+     * The name of the image.
+     */
+    @Column(name = "NAME", nullable = false)
+    private String name;
 
-	public Image(Translation translation, String name, byte[] value, Integer targetSize, ImageType type) {
-		super();
-		this.translation = translation;
-		this.name = name;
-		this.value = value;
-		this.targetSize = targetSize;
-		this.type = type;
-	}
+    /**
+     * The value (binary data) of the image.
+     */
+    @Column(name = "VALUE", nullable = false)
+    private byte[] value;
 
-	public ImageType getType() {
-		return type;
-	}
+    /**
+     * The target size of the image.
+     */
+    @Column(name = "TARGET_SIZE", nullable = false)
+    private Integer targetSize;
 
-	public void setType(ImageType type) {
-		this.type = type;
-	}
+    /**
+     * The type of the image.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TYPE", nullable = false)
+    private ImageType type;
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * Default constructor.
+     * Creates a new instance of Image.
+     */
+    public Image() {}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * Parameterized constructor.
+     * Creates a new instance of Image with the specified attributes.
+     * 
+     * @param translation The Translation associated with this image.
+     * @param name The name of the image.
+     * @param value The binary data of the image.
+     * @param targetSize The target size of the image.
+     * @param type The type of the image.
+     */
+    public Image(Translation translation, String name, byte[] value, Integer targetSize, ImageType type) {
+        this.translation = translation;
+        this.name = name;
+        this.value = value;
+        this.targetSize = targetSize;
+        this.type = type;
+    }
 
-	public Translation getTranslation() {
-		return translation;
-	}
+    /**
+     * Returns the type of the image.
+     * 
+     * @return The type of the image.
+     */
+    public ImageType getType() {
+        return type;
+    }
 
-	public void setTranslation(Translation translation) {
-		this.translation = translation;
-	}
+    /**
+     * Sets the type of the image.
+     * 
+     * @param type The type of the image.
+     */
+    public void setType(ImageType type) {
+        this.type = type;
+    }
 
-	public byte[] getValue() {
-		return value;
-	}
+    /**
+     * Returns the name of the image.
+     * 
+     * @return The name of the image.
+     */
+    public String getName() {
+        return name;
+    }
 
-	public void setValue(byte[] value) {
-		this.value = value;
-	}
+    /**
+     * Sets the name of the image.
+     * 
+     * @param name The name of the image.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getTargetSize() {
-		return targetSize;
-	}
+    /**
+     * Returns the Translation associated with this image.
+     * 
+     * @return The Translation associated with this image.
+     */
+    public Translation getTranslation() {
+        return translation;
+    }
 
-	public void setTargetSize(Integer targetSize) {
-		this.targetSize = targetSize;
-	}
+    /**
+     * Sets the Translation associated with this image.
+     * 
+     * @param translation The Translation associated with this image.
+     */
+    public void setTranslation(Translation translation) {
+        this.translation = translation;
+    }
 
+    /**
+     * Returns the binary data of the image.
+     * 
+     * @return The binary data of the image.
+     */
+    public byte[] getValue() {
+        return value;
+    }
+
+    /**
+     * Sets the binary data of the image.
+     * 
+     * @param value The binary data of the image.
+     */
+    public void setValue(byte[] value) {
+        this.value = value;
+    }
+
+    /**
+     * Returns the target size of the image.
+     * 
+     * @return The target size of the image.
+     */
+    public Integer getTargetSize() {
+        return targetSize;
+    }
+
+    /**
+     * Sets the target size of the image.
+     * 
+     * @param targetSize The target size of the image.
+     */
+    public void setTargetSize(Integer targetSize) {
+        this.targetSize = targetSize;
+    }
 }

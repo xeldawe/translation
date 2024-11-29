@@ -3,41 +3,77 @@ package hu.davidder.translations.image.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The ImageInsertBody class contains an image URL and its target sizes.
+ * This class is used for uploading and processing images.
+ */
 public class ImageInsertBody {
 
-	private String url;
-	private List<Integer> targetSizes = new ArrayList<>();
+    // The URL of the image
+    private String url;
 
-	public ImageInsertBody(String url) {
-		super();
-		this.url = url;
-	}
+    // The list of target sizes for the image
+    private List<Integer> targetSizes = new ArrayList<>();
 
-	public ImageInsertBody(String url, List<Integer> targetSizes) {
-		super();
-		this.url = url;
-		this.targetSizes = targetSizes;
-	}
+    /**
+     * Default constructor.
+     * Creates a default ImageInsertBody object.
+     */
+    public ImageInsertBody() {}
 
-	public ImageInsertBody() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * Constructor with URL parameter.
+     * 
+     * @param url The URL of the image.
+     */
+    public ImageInsertBody(String url) {
+        this.url = url;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    /**
+     * Constructor with URL and target sizes parameters.
+     * 
+     * @param url The URL of the image.
+     * @param targetSizes The list of target sizes.
+     */
+    public ImageInsertBody(String url, List<Integer> targetSizes) {
+        this.url = url;
+        this.targetSizes = targetSizes;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    /**
+     * Returns the URL of the image.
+     * 
+     * @return The URL of the image.
+     */
+    public String getUrl() {
+        return url;
+    }
 
-	public List<Integer> getTargetSizes() {
-		return targetSizes;
-	}
+    /**
+     * Sets the URL of the image.
+     * 
+     * @param url The URL of the image.
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public void setTargetSizes(List<Integer> targetSizes) {
-		this.targetSizes = targetSizes;
-	}
+    /**
+     * Returns the list of target sizes.
+     * 
+     * @return The list of target sizes.
+     */
+    public List<Integer> getTargetSizes() {
+        return targetSizes;
+    }
 
+    /**
+     * Sets the list of target sizes.
+     * 
+     * @param targetSizes The list of target sizes.
+     */
+    public void setTargetSizes(List<Integer> targetSizes) {
+        this.targetSizes = targetSizes;
+    }
 }

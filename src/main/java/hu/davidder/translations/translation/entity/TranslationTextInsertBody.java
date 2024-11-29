@@ -1,34 +1,70 @@
 package hu.davidder.translations.translation.entity;
 
+/**
+ * The TranslationTextInsertBody class represents a data transfer object that includes
+ * a translation key and its corresponding value.
+ */
 public class TranslationTextInsertBody {
 
-	public TranslationTextInsertBody() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    private String key;
+    private String value;
 
-	public TranslationTextInsertBody(String key, String value) {
-		this.key = key;
-		this.value = value;
-	}
+    /**
+     * Default constructor.
+     * Creates a new instance of TranslationTextInsertBody.
+     */
+    public TranslationTextInsertBody() {}
 
-	private String key;
-	private String value;
+    /**
+     * Parameterized constructor.
+     * Creates a new instance of TranslationTextInsertBody with the specified attributes.
+     * 
+     * @param key The key of the translation.
+     * @param value The value of the translation.
+     */
+    public TranslationTextInsertBody(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
 
-	public String getKey() {
-		return key;
-	}
+    /**
+     * Returns the key of the translation.
+     * 
+     * @return The key of the translation.
+     */
+    public String getKey() {
+        return key;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    /**
+     * Sets the key of the translation.
+     * 
+     * @param key The key to set.
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    /**
+     * Returns the value of the translation.
+     * 
+     * @return The value of the translation.
+     */
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    /**
+     * Sets the value of the translation.
+     * 
+     * @param value The value to set.
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
 
+    @Override
+    public String toString() {
+        return "TranslationTextInsertBody [key=" + key + ", value=" + value + "]";
+    }
 }

@@ -26,7 +26,6 @@ public class RateLimitService {
 	@Autowired
 	private ProxyManager proxyManager;
 	
-	@Async
     public Bandwidth globalRateLimit() {
     	return Bandwidth
 				.builder()
@@ -48,7 +47,6 @@ public class RateLimitService {
 		proxyManager.removeProxy(rateLimit.getCacheKey());
 	}
 
-	@Async
 	private BucketConfiguration createBucketConfiguration(final RateLimit rateLimit) {
 		return BucketConfiguration.builder()
 				.addLimit(rateLimit.getRateLimitType().equals(RateLimitType.GLOBAL)?globalRateLimit():rateLimit.getPlan().getLimit())

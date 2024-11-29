@@ -1,6 +1,5 @@
 package hu.davidder.translations.core.config;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,17 +41,17 @@ public class SecurityConfig {
 	public SecurityFilterChain configure(final HttpSecurity http) throws Exception  {
 		http
 			.cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
-			.csrf(csrfConfigurer -> csrfConfigurer.disable())
+			.csrf(AbstractHttpConfigurer::disable)
 			.sessionManagement(sessionConfigurer -> sessionConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(authorize -> {
+			.authorizeHttpRequests(authorize -> 
 				authorize
 //				.anyRequest().permitAll();
 						.requestMatchers(HttpMethod.GET,privateEndpoints).authenticated()
 //						.requestMatchers(HttpMethod.POST,publicEndpoints).permitAll()
 //						.requestMatchers(HttpMethod.PUT,publicEndpoints).permitAll()
 //						.requestMatchers(HttpMethod.PATCH,publicEndpoints).permitAll()
-					.anyRequest().permitAll();
-				});
+					.anyRequest().permitAll()
+				);
 		   http.addFilterBefore(
 				   rateLimitFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();

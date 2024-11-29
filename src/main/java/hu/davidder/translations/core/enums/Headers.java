@@ -27,7 +27,7 @@ public enum Headers {
 	}
 
 	public static List<String> asList() {
-		return Stream.of(Headers.values()).map(Enum::toString).collect(Collectors.toList());
+		return Stream.of(Headers.values()).map(Enum::toString).toList();
 	}
 
 	@Override

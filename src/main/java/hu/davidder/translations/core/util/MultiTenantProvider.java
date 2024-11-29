@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.Transient;
+
 @Component
 public class MultiTenantProvider implements MultiTenantConnectionProvider<String> {
 	

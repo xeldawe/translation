@@ -51,7 +51,6 @@ public class ImageService {
 		return resizeImage(url, res, true);
 	}
 
-	@Async
 	byte[] resizeImage(String url, int res, boolean withResize) {
 		if(res == 0) {
 			withResize = false;
@@ -61,18 +60,18 @@ public class ImageService {
 			if (withResize && image != null)
 				image = Scalr.resize(image, res);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			String type = ImageType.PNG.name;
+			String type = ImageType.PNG.typeName;
 			if (url.contains(ImageType.JPG.value)) {
-				type = ImageType.JPG.name;
+				type = ImageType.JPG.typeName;
 			}
 			if (image == null)
-				return null;
+				return new byte[0];
 			ImageIO.write(image, type, baos);
 			byte[] bytes = baos.toByteArray();
 			return bytes;
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
-			return null;
+			return new byte[0];
 		}
 	}
 

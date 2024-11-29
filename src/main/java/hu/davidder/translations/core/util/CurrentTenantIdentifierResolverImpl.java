@@ -2,6 +2,7 @@ package hu.davidder.translations.core.util;
 
 import java.util.Objects;
 
+import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import hu.davidder.translations.core.interceptors.MarketInterceptor;
 
 @SuppressWarnings("rawtypes")
 @Component
-public class CurrentTenantIdentifierResolver implements org.hibernate.context.spi.CurrentTenantIdentifierResolver{
+public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentifierResolver{
 	
 	@Autowired
 	private MarketInterceptor marketInterceptor;

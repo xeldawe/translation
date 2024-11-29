@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -102,7 +101,7 @@ public class RateLimitFilter extends  OncePerRequestFilter  {
 
 	@Deprecated
 	private RateLimit getDummyRateLimit(final String rateLimit, final String ipAddress, final RateLimitType type) {
-		RateLimit key = null;
+		//RateLimit key = null;
 		if (rateLimit.startsWith("123456")) { // TODO
 			return new RateLimit(rateLimit, PricingPlan.TIER2, ipAddress, type);
 		} else if (rateLimit.startsWith("zzzzzzz")) { // TODO

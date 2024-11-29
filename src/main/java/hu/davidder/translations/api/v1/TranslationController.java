@@ -1,8 +1,5 @@
 package hu.davidder.translations.api.v1;
 
-import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import hu.davidder.translations.image.entity.Image;
 import hu.davidder.translations.image.service.ImageService;
 import hu.davidder.translations.translation.entity.Translation;
 import hu.davidder.translations.translation.entity.TranslationImageInsertBody;
 import hu.davidder.translations.translation.entity.TranslationTextInsertBody;
-import hu.davidder.translations.translation.entity.Type;
 import hu.davidder.translations.translation.service.TranslationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

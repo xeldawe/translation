@@ -7,11 +7,11 @@ public enum ImageType {
 	JPG("JPG", ".jpg"),
 	;
 
-	public final String name;
+	public final String typeName;
 	public final String value;
 
-	private ImageType(String name, String value) {
-		this.name = name;
+	private ImageType(String typeName, String value) {
+		this.typeName = typeName;
 		this.value = value;
 	}
 

@@ -1,7 +1,5 @@
 package hu.davidder.translations.core.config;
 
-
-
 import java.util.concurrent.Executor;
 
 import org.springframework.context.annotation.Bean;

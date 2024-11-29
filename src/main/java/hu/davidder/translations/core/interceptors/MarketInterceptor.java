@@ -45,7 +45,7 @@ public class MarketInterceptor implements HandlerInterceptor {
 	    Pattern pattern = Pattern.compile(marketRegex, Pattern.CASE_INSENSITIVE);
 	    Matcher matcher = pattern.matcher(path);
 	    return matcher.find()?
-	    		 Optional.of(matcher.group(0).replaceAll("/", ""))
+	    		 Optional.of(matcher.group(0).replace("/", ""))
 	    				: Optional.empty();
 	}
 	

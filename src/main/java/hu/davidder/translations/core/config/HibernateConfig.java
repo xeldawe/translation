@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.MultiTenancySettings;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,14 +21,13 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @PropertySource("classpath:hibernate.properties")
 public class HibernateConfig {
 
-//	private static final Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
-
+	public static final String PUBLIC = "public";
+	
 	@Value("${batch_size:20}")
 	private String batchSize;
 	@Value("${hbm2ddl.auto:create}")
 	private String hbm2ddl;
-	public final static String PUBLIC = "public";
-
+	
 	@Lazy
 	@Bean
 	@Primary
@@ -36,8 +36,8 @@ public class HibernateConfig {
 			CurrentTenantIdentifierResolver<String> currentTenantIdentifierResolverImpl) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		Properties hibernateProp = new Properties();
-		hibernateProp.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER, multiTenantConnectionProviderImpl);
-		hibernateProp.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER, currentTenantIdentifierResolverImpl);
+		hibernateProp.put(MultiTenancySettings.MULTI_TENANT_CONNECTION_PROVIDER, multiTenantConnectionProviderImpl);
+		hibernateProp.put(MultiTenancySettings.MULTI_TENANT_IDENTIFIER_RESOLVER, currentTenantIdentifierResolverImpl);
 //		hibernateProp.put("hibernate.default_schema", "en-th");
 		hibernateProp.put("hibernate.hbm2ddl.auto", hbm2ddl);
 		hibernateProp.put("hibernate.enable_lazy_load_no_trans", "true");

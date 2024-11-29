@@ -101,7 +101,6 @@ public class Translation extends EntityBase implements Serializable{
 		this.images = images;
 	}
 
-	@Deprecated
 	@Override
 	public String toString() {
 		return "Translation [id=" + super.id + ", key=" + key + ", value=" + value + ", type=" + type + ", images=" + images

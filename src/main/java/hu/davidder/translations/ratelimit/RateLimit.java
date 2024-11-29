@@ -4,6 +4,7 @@ package hu.davidder.translations.ratelimit;
 import java.io.Serializable;
 
 import io.github.bucket4j.Bucket;
+import jakarta.persistence.Transient;
 
 public class RateLimit implements Serializable{
 

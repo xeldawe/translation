@@ -20,10 +20,8 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,16 +53,14 @@ public class TranslationService {
 
 	@Value("${image.base.url.prefix}")
 	private String imageUrlPrefix;
-	
+
 	@Value("${image.base.url.postfix}")
 	private String imageUrlPostfix;
 
 	@Deprecated
 	public void loadFromFile(String path) throws JsonMappingException, JsonProcessingException, IOException {
-		Map<String, String> result = new ObjectMapper().readValue(
-				FileUtils.readFileToString(new File(path),
-						StandardCharsets.UTF_8),
-				HashMap.class);
+		Map<String, String> result = new ObjectMapper()
+				.readValue(FileUtils.readFileToString(new File(path), StandardCharsets.UTF_8), HashMap.class);
 		List<Translation> data = new LinkedList<>();
 		int[] counter = new int[1];
 		counter[0] = 0;
@@ -99,21 +95,21 @@ public class TranslationService {
 		repository.saveAll(data);
 	}
 
-	@Cacheable(value = "translations", keyGenerator="marketKeyGenerator",unless="#result == null or #result.size()==0")
+	@Cacheable(value = "translations", keyGenerator = "marketKeyGenerator", unless = "#result == null or #result.size()==0")
 	public Iterable<Translation> findAll() {
 		return replaceLinks(repository.findAll());
 	}
 
 	@Deprecated
-	//@Cacheable(value = "translation", key = "{#key}",unless="#result == null")
+	// @Cacheable(value = "translation", key = "{#key}",unless="#result == null")
 	public Translation findByKey(String key) {
 		return replaceLink(repository.findByKey(key));
 	}
-	
-	@Cacheable(value = "translation", key = "{#key}",unless="#result == null")
+
+	@Cacheable(value = "translation", key = "{#key}", unless = "#result == null")
 	public Translation findById(long id) {
 		Optional<Translation> t = repository.findById(id);
-		if(t.isPresent()) {
+		if (t.isPresent()) {
 			return replaceLink(t.get());
 		}
 		return null;
@@ -144,24 +140,26 @@ public class TranslationService {
 		}
 		return res;
 	}
-	
+
 	public Translation replaceLink(Translation d) {
 		if (d.getType().equals(Type.IMAGE)) {
-			d.setValue(imageUrlPrefix+MarketInterceptor.currentTenant.get()+"/"+imageUrlPostfix+ d.getValue());
+			d.setValue(imageUrlPrefix + MarketInterceptor.currentTenant.get() + "/" + imageUrlPostfix + d.getValue());
 		}
 		return d;
 	}
 
+	@Deprecated
 	public TranslationRepository getRepository() {
 		return repository;
 	}
-	
+
 	public Translation create(TranslationTextInsertBody translationInsertBody) {
-		Translation translation = new Translation(translationInsertBody.getKey(), translationInsertBody.getValue(), Type.TEXT);
+		Translation translation = new Translation(translationInsertBody.getKey(), translationInsertBody.getValue(),
+				Type.TEXT);
 		repository.save(translation);
 		return translation;
 	}
-	
+
 	public Translation forward(long originalId, long newId) {
 		Translation translation = findById(originalId);
 		translation.setForwarded(findById(newId));
@@ -169,7 +167,7 @@ public class TranslationService {
 		repository.save(translation);
 		return translation;
 	}
-	
+
 	public Translation disableForward(long id) {
 		Translation translation = findById(id);
 		translation.setForwarded(null);
@@ -177,28 +175,28 @@ public class TranslationService {
 		repository.save(translation);
 		return translation;
 	}
-	
+
 	public Translation delete(long id) {
 		Translation translation = findById(id);
 		translation.setDeleted(true);
 		repository.save(translation);
 		return translation;
 	}
-	
+
 	public Translation undelete(long id) {
 		Translation translation = findById(id);
 		translation.setDeleted(false);
 		repository.save(translation);
 		return translation;
 	}
-	
+
 	public Translation changeStatus(long id, boolean status) {
 		Translation translation = findById(id);
 		translation.setStatus(status);
 		repository.save(translation);
 		return translation;
 	}
-	
+
 	public Translation createImage(TranslationImageInsertBody translationInsertBody) {
 		Translation newTranslation = new Translation();
 		newTranslation.setType(Type.IMAGE);
@@ -210,10 +208,10 @@ public class TranslationService {
 		repository.save(newTranslation);
 		return replaceLink(newTranslation);
 	}
-	
-	public Map<String, String> convertToAngular(Iterable<Translation> data){
+
+	public Map<String, String> convertToAngular(Iterable<Translation> data) {
 		Map<String, String> res = new HashMap<>();
-		for(Translation curr:data) {
+		for (Translation curr : data) {
 			res.put(curr.getKey(), curr.getValue());
 		}
 		return res;

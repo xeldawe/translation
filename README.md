@@ -19,7 +19,7 @@ Serving different images/translations for every different lang or market
 ## TODO better readme :)
 
 ## swagger ->
-![image](https://github.com/user-attachments/assets/0ed4fbb6-705d-46ca-bbd7-4d58b8dfac84)
+![image](https://github.com/user-attachments/assets/f6948165-8ba7-42c7-9172-7cb5b5c811dd)
 
 ## create image ->
 ![image](https://github.com/xeldawe/translation/assets/57683043/c1760a84-6787-4508-81de-00a4db5d6e20)

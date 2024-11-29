@@ -82,7 +82,7 @@ public class ImageService {
      * @param withResize Whether to resize the image.
      * @return The byte array of the resized image.
      */
-    byte[] resizeImage(String url, int res, boolean withResize) {
+    public byte[] resizeImage(String url, int res, boolean withResize) {
         if (res == 0) {
             withResize = false;
         }

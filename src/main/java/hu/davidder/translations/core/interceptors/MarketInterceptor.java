@@ -39,10 +39,9 @@ public class MarketInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String tenant = Optional.ofNullable(request.getHeader(Headers.X_MARKET.getName()))
-                                .orElseGet(() -> findMarketFromUrl(request.getRequestURI()
-                                                    .substring(request.getContextPath().length()))
-                                                    .orElse(null));
+    	String tenant = findMarketFromUrl(request.getRequestURI()) 
+    			.orElseGet(() -> Optional.ofNullable(request.getHeader(Headers.X_MARKET.getName())) 
+    					.orElse(null));
         if (tenant != null) {
             setCurrentTenant(tenant.toLowerCase());
         }
@@ -84,4 +83,9 @@ public class MarketInterceptor implements HandlerInterceptor {
     public void clear() {
         currentTenant.remove();
     }
+
+    //for test
+	public void setMarketRegex(String string) {
+		this.marketRegex = string;
+	}
 }
